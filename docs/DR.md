@@ -137,9 +137,9 @@ O sistema contará com funcionalidades offline e sincronização automática ao 
 
 ---
 
-## **9. Protótipos e Telas (Opcional)**
+## **9. Digramas UML**
 
-> (Inserir imagens ou links para protótipos de interface, wireframes ou fluxos de navegação caso já estejam disponíveis.)
+> (Inserir imagens.)
 
 ---
 
