@@ -1,5 +1,5 @@
 # Análise de Requisitos  
-**Versão:** 1.0  
+**Versão:** 1.0.0  
 **Data:** 10/04/2025  
 **Projeto:** Aplicativo mobile para o gerenciamento de comissões de barbearias  
 **Objetivo:** Otimizar a gestão financeira e o controle de comissões em barbearias.
