@@ -5,7 +5,7 @@
 **Versão do Documento:** 1.0.0  
 **Data de Criação:** 10/04/2025  
 **Última Atualização:** 14/04/2025  
-**Autor:** [Seu Nome]  
+**Autor:** Karla Cristina Ferreira, Igor Xisto Ferreira, Victor Miranda, Marcelo Prata Patrício, Mylena Antonelli Ferraz Netto
 **Projeto:** Aplicativo Mobile para Gerenciamento Financeiro e de Comissões de Barbearias
 
 ---
