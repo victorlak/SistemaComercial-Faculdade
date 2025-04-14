@@ -160,5 +160,5 @@ O sistema contará com funcionalidades offline e sincronização automática ao 
 
 | Versão | Data       | Autor         | Descrição das alterações                      |
 |--------|------------|---------------|-----------------------------------------------|
-| 1.0.0  | 10/04/2025 | [Seu Nome]    | Criação do documento inicial                  |
-| 1.0.1  | 14/04/2025 | [ChatGPT + Você] | Expansão do escopo, requisitos e seções extras |
+| 1.0.0  | 10/04/2025 | Marcelo Prata Patrício    | Criação do documento inicial                  |
+| 1.0.1  | 14/04/2025 | Marcelo Prata Patrício | Expansão do escopo, requisitos e seções extras |
