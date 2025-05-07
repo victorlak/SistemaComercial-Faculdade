@@ -1,77 +1,138 @@
-# Arquitetura de Software - Sistema de Gerenciamento para Barbearia
+# 💈 Sistema de Gerenciamento para Barbearia
 
-## Sumário
-- [Arquitetura do Sistema](#arquitetura-do-sistema)
-- [Tipo de Arquitetura](#tipo-de-arquitetura)
-- [Componentes do Software](#componentes-do-software)
-- [Componentes de Hardware](#componentes-de-hardware)
-- [Detalhes dos Componentes Principais](#detalhes-dos-componentes-principais)
-- [Comunicação entre Componentes](#comunicação-entre-componentes)
-- [Diagrama Simplificado](#diagrama-simplificado)
-- [Considerações Finais](#considerações-finais)
+Sistema mobile desenvolvido com **React Native** e **Firebase**, pensado para modernizar e facilitar o gerenciamento de barbearias, desde o controle de funcionários e serviços até a geração de relatórios financeiros.
 
-## Arquitetura do Sistema
-Adotamos uma arquitetura em camadas com padrão cliente-servidor e MVC (Model-View-Controller), ideal para nosso aplicativo mobile desenvolvido em React Native com Firebase.
+---
 
-## Tipo de Arquitetura
-| Característica          | Descrição                                                                 |
-|-------------------------|---------------------------------------------------------------------------|
-| Arquitetura em Camadas  | Organização lógica com separação clara de responsabilidades              |
-| Cliente-Servidor        | Aplicativo mobile (cliente) se comunicando com backend na nuvem (servidor)|
-| MVC no Frontend         | Facilita desenvolvimento com React Native, separando lógica da interface  |
+## 📚 Sumário
 
-## Componentes do Software
+- [📐 Arquitetura do Sistema](#-arquitetura-do-sistema)
+- [🧱 Tipo de Arquitetura](#-tipo-de-arquitetura)
+- [🧩 Componentes do Software](#-componentes-do-software)
+- [🖥️ Componentes de Hardware](#️-componentes-de-hardware)
+- [🔍 Detalhes dos Componentes Principais](#-detalhes-dos-componentes-principais)
+- [🔗 Comunicação entre Componentes](#-comunicação-entre-componentes)
+- [📊 Diagrama Simplificado](#-diagrama-simplificado)
+- [✅ Considerações Finais](#-considerações-finais)
+
+---
+
+## 📐 Arquitetura do Sistema
+
+Adotamos uma arquitetura em **camadas** com padrão **cliente-servidor** e **MVC (Model-View-Controller)**, adequada para nosso app mobile feito com React Native e backend gerenciado com Firebase.
+
+---
+
+## 🧱 Tipo de Arquitetura
+
+- **Camadas**: separa responsabilidades de forma lógica e organizada.
+- **Cliente-Servidor**: app mobile (cliente) + backend Firebase (servidor).
+- **MVC**: facilita separação de lógica e interface no React Native.
+
+---
+
+## 🧩 Componentes do Software
 
 ### Frontend (React Native)
-| Componente               | Tecnologias/Bibliotecas                                                   |
-|--------------------------|---------------------------------------------------------------------------|
-| Telas de autenticação    | React Navigation, Firebase Auth                                          |
-| Módulo administrativo    | Redux/Context API, React Native Paper                                    |
-| Módulo do funcionário    | Axios, React Native Charts                                               |
-| Componentes compartilhados | Formulários, listas, UI components                                     |
+
+- Telas de autenticação (login, recuperação de senha)
+- Módulo administrativo (cadastros, relatórios)
+- Módulo do funcionário (registro de serviços, ganhos)
+- Componentes reutilizáveis (formulários, listas)
+
+**Bibliotecas utilizadas:**
+
+- `React Navigation`
+- `Redux` ou `Context API`
+- `Axios`
+- `React Native Paper`
+- `React Native Charts`
 
 ### Backend (Firebase)
-| Serviço                  | Função                                                                   |
-|--------------------------|---------------------------------------------------------------------------|
-| Firebase Authentication  | Gerenciamento de usuários e acesso                                       |
-| Firestore Database       | Banco de dados principal                                                 |
-| Firebase Functions       | Lógica de negócio complexa                                               |
-| Firebase Storage         | Armazenamento de arquivos                                                |
-| Firebase Cloud Messaging | Notificações push                                                        |
 
-## Componentes de Hardware
+- `Firebase Authentication`
+- `Cloud Firestore`
+- `Firebase Functions`
+- `Firebase Storage`
+- `Firebase Hosting` (para futura versão web)
+- `Firebase Cloud Messaging`
+- Geração de PDFs e planilhas
+- Validação de formulários
 
-### Desenvolvimento
-- Computadores com capacidade para rodar emuladores mobile
-- Dispositivos físicos para testes (Android e iOS)
-- Acesso aos serviços do Firebase na nuvem
+---
 
-### Implantação
+## 🖥️ Componentes de Hardware
+
+### Para desenvolvimento:
+
+- Computadores com emuladores Android/iOS
+- Dispositivos físicos (Android e iOS)
+
+### Para implantação:
+
 - Servidores do Firebase (gerenciados pelo Google)
-- Dispositivos móveis dos usuários finais (celulares e tablets)
+- Dispositivos móveis dos usuários
 
-## Detalhes dos Componentes Principais
+---
 
-| Componente               | Tecnologias              | Casos de Uso Atendidos                     |
-|--------------------------|--------------------------|--------------------------------------------|
-| Autenticação             | Firebase Auth            | Login, logout, recuperação de senha        |
-| Gerenciamento de Funcionários | Firestore, React Native | CRUD de funcionários, ativação/desativação |
-| Gerenciamento de Serviços | Firestore, React Native  | CRUD de serviços e comissões               |
-| Registro de Serviços     | Firestore, Firebase Functions | Registro de serviços, cálculo comissões |
-| Relatórios               | React Native Charts      | Geração de relatórios financeiros         |
+## 🔍 Detalhes dos Componentes Principais
 
-## Comunicação entre Componentes
-- Frontend → Backend: Chamadas HTTP/HTTPS via SDK do Firebase
-- Sincronização offline: Recursos nativos do Firestore
-- Notificações: Firebase Cloud Messaging
-- Comunicação segura e criptografada
+### 1. Autenticação
 
-## Diagrama Simplificado
+- Login, logout, recuperação de senha
+- Utiliza Firebase Authentication
+
+### 2. Gerenciamento de Funcionários
+
+- CRUD de funcionários
+- Firestore + React Native
+
+### 3. Gerenciamento de Serviços
+
+- Cadastro, edição e remoção de serviços
+- Firestore + React Native
+
+### 4. Registro de Serviços
+
+- Registro e cálculo de comissões
+- Firestore + Firebase Functions
+
+### 5. Relatórios
+
+- Dados financeiros e de desempenho
+- Firestore + React Native Charts
+
+---
+
+## 🔗 Comunicação entre Componentes
+
+- Comunicação via **HTTP/HTTPS** com o **SDK do Firebase**
+- Recursos de **sincronização offline** do Firestore
+- Notificações via **Firebase Cloud Messaging**
+
+---
+
+## 📊 Diagrama Simplificado
+
 ```mermaid
-graph TD
-    A[Dispositivo Mobile] -->|HTTPS| B[Firebase Auth]
-    A -->|HTTPS| C[Firestore Database]
-    A --> D[Componentes UI]
-    C --> E[Firebase Functions]
-    E --> F[Processamento Complexo]
+flowchart TD
+    A[App React Native] -->|HTTPS| B[Firebase Authentication]
+    A -->|HTTPS| C[Cloud Firestore]
+    A --> D[Firebase Functions]
+    C --> E[Relatórios (Charts)]
+    D --> F[Comissões e lógica avançada]
     A --> G[Firebase Cloud Messaging]
+```
+
+---
+
+## ✅ Considerações Finais
+
+Esta arquitetura foi pensada para:
+
+- ✅ Funcionar offline (offline-first)
+- 🔐 Garantir segurança com regras do Firebase
+- 📈 Escalar conforme o crescimento da barbearia
+- ♻️ Facilitar adição de novas funcionalidades
+
+A união de **React Native** com **Firebase** proporciona uma solução robusta, segura e com excelente desempenho para atender as necessidades modernas de uma barbearia.
