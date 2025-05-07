@@ -1,138 +1,149 @@
-# 💈 Sistema de Gerenciamento para Barbearia
 
-Sistema mobile desenvolvido com **React Native** e **Firebase**, pensado para modernizar e facilitar o gerenciamento de barbearias, desde o controle de funcionários e serviços até a geração de relatórios financeiros.
+# Sistema de Gerenciamento para Barbearia
 
----
+## Sumário
 
-## 📚 Sumário
-
-- [📐 Arquitetura do Sistema](#-arquitetura-do-sistema)
-- [🧱 Tipo de Arquitetura](#-tipo-de-arquitetura)
-- [🧩 Componentes do Software](#-componentes-do-software)
-- [🖥️ Componentes de Hardware](#️-componentes-de-hardware)
-- [🔍 Detalhes dos Componentes Principais](#-detalhes-dos-componentes-principais)
-- [🔗 Comunicação entre Componentes](#-comunicação-entre-componentes)
-- [📊 Diagrama Simplificado](#-diagrama-simplificado)
-- [✅ Considerações Finais](#-considerações-finais)
-
----
-
-## 📐 Arquitetura do Sistema
-
-Adotamos uma arquitetura em **camadas** com padrão **cliente-servidor** e **MVC (Model-View-Controller)**, adequada para nosso app mobile feito com React Native e backend gerenciado com Firebase.
+1. [Arquitetura do Sistema](#arquitetura-do-sistema)  
+2. [Tipo de Arquitetura](#tipo-de-arquitetura)  
+3. [Componentes do Software](#componentes-do-software)  
+   - [Frontend (React Native)](#frontend-react-native)  
+   - [Backend (Firebase)](#backend-firebase)  
+4. [Componentes de Hardware](#componentes-de-hardware)  
+5. [Detalhes dos Componentes Principais](#detalhes-dos-componentes-principais)  
+   - [Componente de Autenticação](#1-componente-de-autenticação)  
+   - [Gerenciamento de Funcionários](#2-gerenciamento-de-funcionários)  
+   - [Gerenciamento de Serviços](#3-gerenciamento-de-serviços)  
+   - [Registro de Serviços](#4-registro-de-serviços)  
+   - [Relatórios](#5-relatórios)  
+6. [Comunicação entre Componentes](#comunicação-entre-componentes)  
+7. [Diagrama Simplificado](#diagrama-simplificado)  
+8. [Considerações Finais](#considerações-finais)  
 
 ---
 
-## 🧱 Tipo de Arquitetura
+## Arquitetura do Sistema
 
-- **Camadas**: separa responsabilidades de forma lógica e organizada.
-- **Cliente-Servidor**: app mobile (cliente) + backend Firebase (servidor).
-- **MVC**: facilita separação de lógica e interface no React Native.
+O sistema adota uma **arquitetura em camadas**, baseada nos padrões **cliente-servidor** e **MVC (Model-View-Controller)**. Essa estrutura é ideal para o desenvolvimento de um aplicativo mobile utilizando **React Native** e **Firebase**, permitindo clara separação de responsabilidades e organização do código.
 
 ---
 
-## 🧩 Componentes do Software
+## Tipo de Arquitetura
+
+- **Arquitetura em camadas**: separa as funcionalidades de forma lógica e organizada.  
+- **Cliente-servidor**: o app mobile atua como cliente, comunicando-se com o backend hospedado na nuvem.  
+- **MVC no frontend**: separa a interface (View), lógica (Controller) e dados (Model), facilitando o desenvolvimento com React Native.
+
+---
+
+## Componentes do Software
 
 ### Frontend (React Native)
 
-- Telas de autenticação (login, recuperação de senha)
-- Módulo administrativo (cadastros, relatórios)
-- Módulo do funcionário (registro de serviços, ganhos)
-- Componentes reutilizáveis (formulários, listas)
+O aplicativo mobile contará com os seguintes módulos e recursos:
+
+- **Telas de autenticação**: login e recuperação de senha.  
+- **Módulo administrativo**: cadastros de funcionários e serviços, além de geração de relatórios.  
+- **Módulo do funcionário**: registro de atendimentos e consulta de ganhos.  
+- **Componentes reutilizáveis**: como formulários e listas.
 
 **Bibliotecas utilizadas:**
 
-- `React Navigation`
-- `Redux` ou `Context API`
-- `Axios`
-- `React Native Paper`
-- `React Native Charts`
+- `React Navigation`: navegação entre telas.  
+- `Redux` ou `Context API`: gerenciamento de estado.  
+- `Axios`: chamadas à API.  
+- `React Native Paper`: componentes de UI.  
+- `React Native Charts`: visualização de dados em gráficos.
 
 ### Backend (Firebase)
 
-- `Firebase Authentication`
-- `Cloud Firestore`
-- `Firebase Functions`
-- `Firebase Storage`
-- `Firebase Hosting` (para futura versão web)
-- `Firebase Cloud Messaging`
-- Geração de PDFs e planilhas
-- Validação de formulários
+Serviços e funcionalidades da nuvem que serão utilizados:
+
+- `Firebase Authentication`: autenticação de usuários.  
+- `Firestore Database`: banco de dados principal.  
+- `Firebase Functions`: lógica de negócio mais complexa.  
+- `Firebase Storage`: armazenamento de arquivos (opcional).  
+- `Firebase Hosting`: suporte a versão web no futuro.  
+- `Firebase Cloud Messaging`: envio de notificações.  
+- Bibliotecas para geração de **PDFs e planilhas**.  
+- Bibliotecas para **validação de formulários**.
 
 ---
 
-## 🖥️ Componentes de Hardware
+## Componentes de Hardware
 
-### Para desenvolvimento:
+### Desenvolvimento
 
-- Computadores com emuladores Android/iOS
-- Dispositivos físicos (Android e iOS)
+- Computadores capazes de rodar emuladores mobile.
+- Dispositivos físicos Android e iOS para testes.
+- Acesso à internet para conexão com o Firebase.
 
-### Para implantação:
+### Implantação
 
-- Servidores do Firebase (gerenciados pelo Google)
-- Dispositivos móveis dos usuários
+- Servidores do Firebase (gerenciados pelo Google).  
+- Dispositivos móveis dos usuários finais (celulares e tablets).
 
 ---
 
-## 🔍 Detalhes dos Componentes Principais
+## Detalhes dos Componentes Principais
 
-### 1. Autenticação
+### 1. Componente de Autenticação
 
-- Login, logout, recuperação de senha
-- Utiliza Firebase Authentication
+- Login, logout e recuperação de senha.
+- Utiliza o **Firebase Authentication**.
+- Atende aos casos de uso de validação de acesso ao sistema.
 
 ### 2. Gerenciamento de Funcionários
 
-- CRUD de funcionários
-- Firestore + React Native
+- CRUD (criar, ler, atualizar e desativar funcionários).
+- Desenvolvido com **Firestore Database** e **React Native**.
+- Atende aos casos de cadastro e ativação/desativação.
 
 ### 3. Gerenciamento de Serviços
 
-- Cadastro, edição e remoção de serviços
-- Firestore + React Native
+- CRUD completo para serviços e comissões.
+- Também baseado em **Firestore** e **React Native**.
+- Atende aos casos relacionados à gestão de serviços da barbearia.
 
 ### 4. Registro de Serviços
 
-- Registro e cálculo de comissões
-- Firestore + Firebase Functions
+- Permite registrar os serviços realizados e calcular comissões.
+- Utiliza **Firestore** para dados e **Firebase Functions** para cálculos.
+- É o recurso principal do módulo do funcionário.
 
 ### 5. Relatórios
 
-- Dados financeiros e de desempenho
-- Firestore + React Native Charts
+- Visões financeiras e de desempenho.
+- Firestore para dados, **React Native Charts** para gráficos.
+- Serve ao administrador e aos funcionários.
 
 ---
 
-## 🔗 Comunicação entre Componentes
+## Comunicação entre Componentes
 
-- Comunicação via **HTTP/HTTPS** com o **SDK do Firebase**
-- Recursos de **sincronização offline** do Firestore
-- Notificações via **Firebase Cloud Messaging**
-
----
-
-## 📊 Diagrama Simplificado
-
-```mermaid
-flowchart TD
-    A[App React Native] -->|HTTPS| B[Firebase Authentication]
-    A -->|HTTPS| C[Cloud Firestore]
-    A --> D[Firebase Functions]
-    C --> E[Relatórios (Charts)]
-    D --> F[Comissões e lógica avançada]
-    A --> G[Firebase Cloud Messaging]
-```
+- A comunicação entre o app e o backend é feita via **HTTP/HTTPS**, usando o SDK do Firebase.
+- O **Firestore** oferece suporte **offline-first**, permitindo o uso sem internet com sincronização posterior.
+- As **notificações push** são tratadas com Firebase Cloud Messaging.
 
 ---
 
-## ✅ Considerações Finais
+## Diagrama Simplificado
 
-Esta arquitetura foi pensada para:
+Fluxo de dados e componentes principais:
 
-- ✅ Funcionar offline (offline-first)
-- 🔐 Garantir segurança com regras do Firebase
-- 📈 Escalar conforme o crescimento da barbearia
-- ♻️ Facilitar adição de novas funcionalidades
+1. O dispositivo mobile envia requisições HTTPS para os serviços do Firebase.
+2. O app interage com componentes de UI no React Native.
+3. Firebase Functions trata lógicas complexas (como cálculo de comissão).
+4. Toda a comunicação é **segura e criptografada**.
 
-A união de **React Native** com **Firebase** proporciona uma solução robusta, segura e com excelente desempenho para atender as necessidades modernas de uma barbearia.
+---
+
+## Considerações Finais
+
+A arquitetura proposta é:
+
+- **Offline-first**, permitindo uso mesmo sem internet.
+- **Segura**, com autenticação, regras de acesso e criptografia.
+- **Escalável**, preparada para crescer conforme a barbearia evoluir.
+- **Modular e extensível**, facilitando a adição de novas funcionalidades.
+
+A união entre **React Native** e **Firebase** oferece uma base sólida, segura e eficiente para o desenvolvimento de um sistema completo de gerenciamento para barbearias.
