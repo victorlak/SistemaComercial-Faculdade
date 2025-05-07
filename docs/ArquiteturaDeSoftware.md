@@ -124,8 +124,6 @@ flowchart TD
     A --> G[Firebase Cloud Messaging]
 ```
 
----
-
 ## ✅ Considerações Finais
 
 Esta arquitetura foi pensada para:
