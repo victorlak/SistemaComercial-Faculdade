@@ -122,6 +122,7 @@ flowchart TD
     C --> E[Relatórios (Charts)]
     D --> F[Comissões e lógica avançada]
     A --> G[Firebase Cloud Messaging]
+
 ```
 
 ## ✅ Considerações Finais
