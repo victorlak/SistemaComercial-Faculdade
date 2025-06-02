@@ -1,3 +1,3 @@
 export default function Home() {
-  return <div>Splash Screen</div>;
+  return <div>Home</div>;
 }
