@@ -1,14 +1,16 @@
+require('dotenv').config();
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+
 const firebaseConfig = {
-  apiKey: "AIzaSyCYQqF8QqVVgqfx50eqtv5dfc_olEICatc",
-  authDomain: "projeto-barbearia-92c43.firebaseapp.com",
-  projectId: "projeto-barbearia-92c43",
-  storageBucket: "projeto-barbearia-92c43.firebasestorage.app",
-  messagingSenderId: "242247847119",
-  appId: "1:242247847119:web:aea244849baa5a593ffbba",
-  measurementId: "G-XEJLN13BEV"
+  apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECTID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGEBUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGINGSENDERID,
+  appId: process.env.REACT_APP_FIREBASE_APPID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENTID
 };
 
 const app = initializeApp(firebaseConfig);
