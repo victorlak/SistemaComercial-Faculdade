@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image } from 'react-native';
-
+import { Text, View, Image } from 'react-native';
+import styles from './styles'
 
 export default function Index() {
+
   return (
     <>
         <View style={styles.container} >
@@ -18,35 +19,3 @@ export default function Index() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#595858',
-    alignItems: 'center',
-    height: '100%',
-    fontFamily: 'Cormorant Garamond'
-  },
-    logo: {
-        height: 171,
-        width: 171
-    },
-    title: {
-        fontSize: 43
-    },
-    subtitle: {
-        marginTop: '30%',
-        fontSize: 16,
-        color: 'white'
-    },
-    curve: {
-        backgroundColor: 'white',
-        width: '100%',
-        height: '70%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderBottomLeftRadius: 180,
-        borderBottomRightRadius: 180,
-    }
-    
-});
