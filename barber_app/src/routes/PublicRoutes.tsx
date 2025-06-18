@@ -18,10 +18,11 @@ function PublicRouter() {
       <Stack.Screen 
         name="Splash" 
         component={SplashScreen}
-        options={{ 
-          headerShown: false,
-          animation: 'none'
-        }}
+      />
+
+      <Stack.Screen 
+        name="Home" 
+        component={Home}
       />
       <Stack.Screen 
         name="Login" 
