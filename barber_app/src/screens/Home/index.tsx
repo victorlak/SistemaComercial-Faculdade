@@ -1,28 +1,49 @@
 import React from 'react';
-import { StyleSheet, ScrollView, SafeAreaView, Text } from 'react-native';
-// Importando os componentes oficiais
-import Card1 from '../../components/Card';
-import Card2 from '../../components/Card2';
+// ADICIONE 'Image' NA LISTA DE IMPORTS
+import { ScrollView, SafeAreaView, Text, TouchableOpacity, Image } from 'react-native';
+
+// Importando os componentes
+import Card1 from '../../components/CardComissoes';
+import Card2 from '../../components/CardPeriodo';
+import { NavBar } from '../../components/NavBar';
+import ServiceItemCard from '../../components/ServiceItemCard';
 import { styles } from './styles';
+
+// Dados de exemplo
+const DADOS_SERVICOS = [
+  { id: '1', nome: 'Coloração', cliente: 'Carlos Oliveira', preco: 70.00, data: '02/05/2025 17:15' },
+  { id: '2', nome: 'Corte', cliente: 'Carlos Oliveira', preco: 35.00, data: '02/05/2025 13:00' },
+  { id: '3', nome: 'Corte', cliente: 'Carlos Oliveira', preco: 35.00, data: '02/05/2025 10:30' },
+  { id: '4', nome: 'Coloração', cliente: 'Carlos Oliveira', preco: 70.00, data: '01/05/2025 16:00' },
+];
 
 export default function Home() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.container}>
+        {/* --- IMAGEM DA LOGO ADICIONADA AQUI --- */}
+        <Image 
+          source={require('../../assets/images/img_logo.png')} // <-- Verifique se o caminho está correto
+          style={styles.logo}
+        />
+
         <Text style={styles.headerTitle}>Barbearia</Text>
         
-        {/* Usando o novo Card1 e passando os dados para ele */}
+        {/* O resto do código continua igual... */}
         <Card1 
           label="Total de Comissões Recebidas"
           value="R$ 10.560,00"
-          icon="$"
         />
-
         <Card2 />
-        
-        {/* Aqui viria a sua lista de "Serviços Recentes" */}
-
+        <Text style={styles.tituloSecao}>Serviços Recentes</Text>
+        {DADOS_SERVICOS.map((servico) => (
+          <ServiceItemCard key={servico.id} data={servico} />
+        ))}
+        <TouchableOpacity>
+          <Text style={styles.verTodos}>Ver todos →</Text>
+        </TouchableOpacity>
       </ScrollView>
+      <NavBar />
     </SafeAreaView>
   );
 }
