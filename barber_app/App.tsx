@@ -1,17 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import SplashScreen from './src/screens/SplashScreen';
-export default function App() {
-  return (
-    <SplashScreen />
-  );
-}
+import React from 'react';
+import { AppRouter } from './src/routes';
+import { useFonts } from 'expo-font';
+import { View } from 'react-native';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function App() {
+  const [fontsLoaded, fontError] = useFonts({
+    'Poppins-Regular': require('./src/assets/fonts/Poppins-Regular.ttf'),
+    'Poppins-Medium': require('./src/assets/fonts/Poppins-Medium.ttf'),
+    'Poppins-Bold': require('./src/assets/fonts/Poppins-Bold.ttf'),
+  });
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
+
+  // Quando as fontes estiverem prontas, mostramos o aplicativo normalmente
+  return <AppRouter />;
+}

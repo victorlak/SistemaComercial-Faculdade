@@ -1,9 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
 import { Text, View, Image } from 'react-native';
 import styles from './styles'
+import { useNavigation } from "@react-navigation/native";
+import { useEffect } from 'react';
 
 
 export default function Index() {
+  const navigation = useNavigation<any>();
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            navigation.navigate('Login', {}, { replace: true });//NAVIGATE LOGIN
+        }, 2000);
+
+        return () => clearTimeout(timer);
+    }, []);
 
   return (
     <>

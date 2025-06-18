@@ -6,14 +6,15 @@ const styles = StyleSheet.create({
       backgroundColor: '#595858',
       alignItems: 'center',
       height: '100%',
-      fontFamily: 'Cormorant Garamond'
+      
     },
       logo: {
           height: 171,
           width: 171
       },
       title: {
-          fontSize: 43
+          fontSize: 43,
+          fontFamily:'Poppins, sans-serif'
       },
       subtitle: {
           marginTop: '30%',
