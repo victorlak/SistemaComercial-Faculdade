@@ -8,6 +8,7 @@ export default function App() {
     'Poppins-Regular': require('./src/assets/fonts/Poppins-Regular.ttf'),
     'Poppins-Medium': require('./src/assets/fonts/Poppins-Medium.ttf'),
     'Poppins-Bold': require('./src/assets/fonts/Poppins-Bold.ttf'),
+    'CormorantGaramond-VariableFont_wght': require('./src/assets/fonts/CormorantGaramond-VariableFont_wght.ttf'),
   });
 
   if (!fontsLoaded && !fontError) {

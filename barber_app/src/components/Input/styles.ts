@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
         fontWeight: 'medium',
         color: '#000000',
         marginTop: 10,
+        fontFamily: "Poppins-Medium",
     },
     input: {
         width: 332,
@@ -19,6 +20,8 @@ export const styles = StyleSheet.create({
         backgroundColor: "#FAFAFA",
         borderColor: "#d0d0d0",
         padding: 12,
-        fontSize:16,
+        fontSize:14,
+        fontFamily: "Poppins-Medium",
+        color: '#B2B2B2',
     },
 })

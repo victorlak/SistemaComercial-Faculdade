@@ -2,7 +2,6 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
     container: {
-        fontFamily: "Poppins-Regular",
         flex: 1,
         alignItems: "center",
         backgroundColor: "white"
@@ -10,9 +9,10 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 40,
         marginTop: 171,
+        fontFamily: "Poppins-Regular",
     },
     button: {
-        marginTop:'10%'
+        marginTop:'10%',
     }
 })
 

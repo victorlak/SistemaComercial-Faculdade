@@ -13,5 +13,6 @@ export const styles = StyleSheet.create({
         fontSize: 19,
         fontWeight: "medium",
         color: "#FFF",
+        fontFamily: "Poppins-Medium",
     },
 })

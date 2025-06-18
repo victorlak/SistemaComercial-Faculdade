@@ -14,12 +14,13 @@ const styles = StyleSheet.create({
       },
       title: {
           fontSize: 43,
-          fontFamily:'Poppins, sans-serif'
+          fontFamily:'CormorantGaramond-VariableFont_wght'
       },
       subtitle: {
           marginTop: '30%',
-          fontSize: 16,
-          color: 'white'
+          fontSize: 14,
+          color: 'white',
+          fontFamily: 'Poppins-Medium',
       },
       curve: {
           backgroundColor: 'white',
