@@ -1,3 +1,8 @@
+import React from 'react';
+import { View, Text} from 'react-native';
+
 export default function NewMember() {
-  return <div>New Member</div>;
+  return (
+    <Text>Adicionar Membro</Text>
+  );
 }
