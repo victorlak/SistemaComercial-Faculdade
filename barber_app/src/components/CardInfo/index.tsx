@@ -13,7 +13,7 @@ type Props = {
 };
 
 //    Se iconColor não for passado, ele usará '#1C1C1E' como padrão.
-export const CardComissoes = ({ 
+export const CardInfo = ({ 
   label, 
   value, 
   icon: Icon, 
