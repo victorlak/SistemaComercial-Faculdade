@@ -1,11 +1,11 @@
 import React from 'react';
 import { ScrollView, SafeAreaView, Text, TouchableOpacity, Image } from 'react-native';
-import {CardComissoes} from '../../components/CardComissoes';
+import {CardComissoes} from '../../components/CardIcon';
 import {CardPeriodo} from '../../components/CardPeriodo';
 import { NavBar } from '../../components/NavBar';
 import ServiceItemCard from '../../components/ServiceItemCard';
 import { styles } from './styles';
-
+import DinheiroIcon from '../../assets/icons/ic_dinheiro.svg';
 const DADOS_SERVICOS = [
   { id: '1', nome: 'Coloração', cliente: 'Carlos Oliveira', preco: 70.00, data: '02/05/2025 17:15' },
   { id: '2', nome: 'Corte', cliente: 'Carlos Oliveira', preco: 35.00, data: '02/05/2025 13:00' },
@@ -37,12 +37,14 @@ export default function Home() {
          <CardComissoes 
           label="Funcionários"
           value="5" //count do banco de dados
-          //icon deveria ser passado aqui para ficar dinamico
+          icon={DinheiroIcon}
+          iconColor='#61b265'
         />
         <CardComissoes 
           label="Serviços"
           value="5" //count do banco de dados
-          //icon deveria ser passado aqui para ficar dinamico
+          icon={DinheiroIcon}
+          iconColor='#1C1C1E'
         />
         <Text style={styles.tituloSecao}>Serviços Recentes</Text>
         {DADOS_SERVICOS.map((servico) => (
