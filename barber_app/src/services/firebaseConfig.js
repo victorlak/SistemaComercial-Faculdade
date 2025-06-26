@@ -1,26 +1,42 @@
-
+require('dotenv').config();
 import { getFirestore } from "firebase/firestore"
 import { getAuth } from "firebase/auth"
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-/*
-REACT_APP_FIREBASE_APIKEY=AIzaSyCYQqF8QqVVgqfx50eqtv5dfc_olEICatc
-REACT_APP_FIREBASE_AUTHDOMAIN=projeto-barbearia-92c43.firebaseapp.com
-REACT_APP_FIREBASE_PROJECTID=projeto-barbearia-92c43
-REACT_APP_FIREBASE_STORAGEBUCKET=projeto-barbearia-92c43.firebasestorage.app
-REACT_APP_FIREBASE_MESSAGINGSENDERID=242247847119
-REACT_APP_FIREBASE_APPID=1:242247847119:web:aea244849baa5a593ffbba
-REACT_APP_FIREBASE_MEASUREMENTID=G-XEJLN13BEV
-*/ 
+
+import {
+  signInWithEmailAndPassword,
+  signOut,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  User,
+} from "firebase/auth";
+import { auth } from "../../services/firebaseConfig";
+
+export const login = (email, password) => {
+  return signInWithEmailAndPassword(auth, email, password);
+};
+
+export const logout = () => {
+  return signOut(auth);
+};
+
+export const register = (email, password) => {
+  return createUserWithEmailAndPassword(auth, email, password);
+};
+
+export const onUserChanged = (callback) => {
+  return onAuthStateChanged(auth, callback);
+};
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBpD4NNFcw1bbJi2rMGy2pMMMQdxgywMjQ",
-  authDomain: "barbearia-oliveira-700b0.firebaseapp.com",
-  projectId: "barbearia-oliveira-700b0",
-  storageBucket: "barbearia-oliveira-700b0.firebasestorage.app",
-  messagingSenderId: "641155618768",
-  appId: "1:641155618768:web:075b936703fc6036334bd5",
-  measurementId: "G-3JHFJPMQHG"
+  apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECTID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGEBUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGINGSENDERID,
+  appId: process.env.REACT_APP_FIREBASE_APPID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENTID
 };
 
 const app = initializeApp(firebaseConfig);

@@ -3,8 +3,8 @@ import Button from "../../components/Button"
 import { Input } from "../../components/Input"
 import styles from './styles'
 import { useState } from "react"
-import { login, register } from "../Service/index";
-import { auth, db } from "../../services/firebaseConfig";
+import { auth, db , login, register} from "../../services/firebaseConfig";
+import React from "react"
 
 export default function Index() {
     const [email, setEmail] = useState('');
