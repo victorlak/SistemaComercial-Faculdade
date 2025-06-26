@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, SafeAreaView, Text, TouchableOpacity, Image, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import { CardInfo } from '../../components/CardInfo';
 import { CardSelector } from '../../components/CardSelector';
@@ -46,6 +47,7 @@ const getTotalPorServico = (servico: string): string => {
 
 
 export default function Home() {
+  const navigation = useNavigation();
   const [selectedPeriod, setSelectedPeriod] = useState(PERIOD_OPTIONS[0]);
   const [commissionByPeriod, setCommissionByPeriod] = useState('');
 
@@ -137,7 +139,7 @@ export default function Home() {
         {recentServices.map((servico) => (
           <ServiceItemCard key={servico.id} data={servico} />
         ))}
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('ServicePerformed')}>
           <Text style={styles.verTodos}>Ver todos →</Text>
         </TouchableOpacity>
       </ScrollView>

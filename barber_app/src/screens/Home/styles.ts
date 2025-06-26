@@ -12,25 +12,21 @@ export const styles = StyleSheet.create({
     paddingBottom: 100,
   },
 
-  // --- ESTILO DA LOGO ADICIONADO ---
   logo: {
     width: 60,
     height: 60,
-    resizeMode: 'contain', // Garante que a imagem caiba no espaço sem distorcer
-    marginTop: 10, // Um espaço extra no topo, se necessário
+    resizeMode: 'contain',
+    marginTop: 10,
   },
 
-  // --- ESTILO DO TÍTULO MODIFICADO ---
   headerTitle: {
-    // Alterado de 'Poppins-Bold' para a fonte regular para tirar o negrito
     fontFamily: 'Poppins-Regular', 
     fontSize: 20,
     textAlign: 'center',
-    marginVertical: 15, // Ajustei um pouco a margem para ficar bom com a logo
+    marginVertical: 15,
     color: '#1C1C1E',
   },
   
-  // O resto dos estilos continua igual
   tituloSecao: {
     fontFamily: 'Poppins-Bold',
     fontSize: 18,

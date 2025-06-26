@@ -6,6 +6,7 @@ import Home from '../screens/Home';
 import Services from '../screens/Service';
 import Team from '../screens/Team';
 import Profile from '../screens/Profile';
+import ServicePerformed from '../screens/ServicePerformed';
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +44,10 @@ function PublicRouter() {
       <Stack.Screen 
         name="Perfil" 
         component={Profile}
+      />
+      <Stack.Screen 
+        name="ServicePerformed" 
+        component={ServicePerformed}
       />
     </Stack.Navigator>
   );

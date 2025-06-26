@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { styles } from './styles';
+import { useNavigation } from '@react-navigation/native';
 
-// Componentes da Tela
 import SetaEsquerda from '../../assets/icons/ic_setaEsquerda.svg';
-import SearchBar from '../../components/Search'; // Corrigido para o nome que usamos
+import SearchBar from '../../components/Search';
 import { CardInfo } from '../../components/CardInfo';
 import { CategoryFilter, Category } from '../../components/CategoryFilter';
 import ServiceItemCard from '../../components/ServiceItemCard';
 
-// Tipos de Dados
 type ServiceData = {
   id: string;
   nome: string;
@@ -18,7 +17,6 @@ type ServiceData = {
   data: string;
 };
 
-// Ícones (Pretos e Brancos)
 import TesouraIcon from '../../assets/images/img_tesoura.png';
 import CorteIconPreto from '../../assets/images/img_cortePreto.png';
 import ColoracaoIconPreto from '../../assets/images/img_coloracaoPreto.png';
@@ -31,7 +29,6 @@ import BarbaIconBranco from '../../assets/images/img_barbaBranco.png';
 import CorteBarbaIconBranco from '../../assets/images/img_corteBarbaBranco.png';
 import HidratacaoIconBranco from '../../assets/images/img_hidratacaoBranco.png';
 
-// Dados das Categorias
 const CATEGORIES_DATA: Category[] = [
   { id: '1', label: 'Corte', iconDefault: CorteIconPreto, iconSelected: CorteIconBranco },
   { id: '2', label: 'Coloração', iconDefault: ColoracaoIconPreto, iconSelected: ColoracaoIconBranco },
@@ -40,7 +37,6 @@ const CATEGORIES_DATA: Category[] = [
   { id: '5', label: 'Hidratação', iconDefault: HidratacaoIconPreto, iconSelected: HidratacaoIconBranco },
 ];
 
-// Mock de Dados dos Serviços
 const ALL_SERVICES_DB: ServiceData[] = [
     { id: '1', nome: 'Coloração', cliente: 'Carlos Oliveira', data: '02/05/2025 17:15', preco: 70.00 },
     { id: '2', nome: 'Corte', cliente: 'Pedro Santos', data: '02/05/2025 13:00', preco: 35.00 },
@@ -52,24 +48,21 @@ const ALL_SERVICES_DB: ServiceData[] = [
 ];
 
 export default function ServicePerformed() {
+  const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null); // Começa com nenhuma categoria selecionada
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [filteredServices, setFilteredServices] = useState<ServiceData[]>([]);
 
-  // Efeito para filtrar a lista
   useEffect(() => {
     let services = ALL_SERVICES_DB;
 
-    // MELHORIA 1: Lógica de filtro de categoria ajustada
     if (selectedCategory) {
       const categoryLabel = CATEGORIES_DATA.find(cat => cat.id === selectedCategory)?.label;
       if (categoryLabel) {
-        // Agora o filtro busca pelo nome EXATO do serviço, e não apenas se "contém"
         services = services.filter(service => service.nome === categoryLabel);
       }
     }
 
-    // Filtro por busca de texto continua o mesmo
     if (searchQuery.trim() !== '') {
       const lowercasedQuery = searchQuery.toLowerCase();
       services = services.filter(service =>
@@ -81,16 +74,14 @@ export default function ServicePerformed() {
     setFilteredServices(services);
   }, [searchQuery, selectedCategory]);
 
-  const handleGoBack = () => console.log('Botão de voltar pressionado');
+  const handleGoBack = () => navigation.goBack();
   const handleFilter = () => console.log('Botão de filtro pressionado');
 
-  // MELHORIA 2: Nova função para lidar com a seleção e desmarcação de categoria
   const handleSelectCategory = (categoryId: string) => {
-    // Se o usuário clicar na categoria que já está selecionada...
     if (selectedCategory === categoryId) {
-      setSelectedCategory(null); // ...desmarca a categoria.
+      setSelectedCategory(null);
     } else {
-      setSelectedCategory(categoryId); // ...senão, seleciona a nova.
+      setSelectedCategory(categoryId);
     }
   };
 
@@ -120,7 +111,6 @@ export default function ServicePerformed() {
                     <CategoryFilter
                         categories={CATEGORIES_DATA}
                         selectedCategoryId={selectedCategory}
-                        // Usa a nova função de seleção aqui
                         onSelectCategory={handleSelectCategory}
                     />
                 </>
