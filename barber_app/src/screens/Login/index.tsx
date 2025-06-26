@@ -3,8 +3,8 @@ import Button from "../../components/Button"
 import { Input } from "../../components/Input"
 import styles from './styles'
 import { useState } from "react"
-import { login, register } from "../Service/index";
 import { auth, db } from "../../services/firebaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth"
 
 export default function Index() {
     const [email, setEmail] = useState('');
@@ -18,7 +18,7 @@ export default function Index() {
 
         setErro('');
             try {
-              await login(email, senha);
+              await signInWithEmailAndPassword(auth, email, senha);
               console.log("entrou");
               
             } catch (err: any) {
