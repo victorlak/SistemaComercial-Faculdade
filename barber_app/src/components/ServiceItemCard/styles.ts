@@ -17,14 +17,14 @@ export const styles = StyleSheet.create({
     marginBottom: 4,
   },
   itemCliente: {
-    fontFamily: 'Poppins-Regular', // Supondo que você tenha a fonte
+    fontFamily: 'Poppins-Regular', 
     fontSize: 14,
     color: '#666666',
   },
   itemPreco: {
     fontFamily: 'Poppins-Bold',
     fontSize: 16,
-    color: '#2E8B57', // Verde
+    color: '#2E8B57', 
     marginBottom: 4,
   },
   itemData: {

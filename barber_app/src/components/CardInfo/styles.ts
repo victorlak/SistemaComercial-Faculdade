@@ -8,21 +8,22 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 4, // ALTERADO: Reduzido de 6 para 4
+    marginBottom: 4,
   },
   label: {
     fontFamily: 'Poppins-Regular',
-    fontSize: 12, // ALTERADO: Reduzido de 13 para 12
+    fontSize: 12,
     color: '#333',
-  },
-  icon: {
-    fontFamily: 'Poppins-Bold',
-    fontSize: 16,
-    color: '#2E7D32',
   },
   value: {
     fontFamily: 'Poppins-Bold',
-    fontSize: 18, // ALTERADO: Reduzido de 24 para 18 (para igualar ao Card2)
+    fontSize: 18,
     color: '#1C1C1E',
+  },
+  // ADICIONE ESTE NOVO ESTILO PARA A IMAGEM
+  iconImage: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
   },
 });
