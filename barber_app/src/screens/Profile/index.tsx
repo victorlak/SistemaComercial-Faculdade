@@ -1,3 +1,21 @@
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+// import { Logo } from './Logo';
+import { NavBar } from '../../components/NavBar';
+
 export default function Profile() {
-  return <div>Profile</div>;
+  return (
+    <View style={styles.container}>
+      <div>Profile</div>
+      {/* <Logo /> */}
+      <NavBar />
+    </View>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff'
+  }
+});
