@@ -28,6 +28,7 @@ import ColoracaoIconBranco from '../../assets/images/img_coloracaoBranco.png';
 import BarbaIconBranco from '../../assets/images/img_barbaBranco.png';
 import CorteBarbaIconBranco from '../../assets/images/img_corteBarbaBranco.png';
 import HidratacaoIconBranco from '../../assets/images/img_hidratacaoBranco.png';
+import { NavBar } from '../../components/NavBar';
 
 const CATEGORIES_DATA: Category[] = [
   { id: '1', label: 'Corte', iconDefault: CorteIconPreto, iconSelected: CorteIconBranco },
@@ -75,7 +76,7 @@ export default function ServicePerformed() {
   }, [searchQuery, selectedCategory]);
 
   const handleGoBack = () => navigation.goBack();
-  const handleFilter = () => console.log('Botão de filtro pressionado');
+  const handleFilter = () => navigation.navigate('Filters');
 
   const handleSelectCategory = (categoryId: string) => {
     if (selectedCategory === categoryId) {
@@ -122,6 +123,7 @@ export default function ServicePerformed() {
             showsVerticalScrollIndicator={false}
         />
       </View>
+      <NavBar />
     </SafeAreaView>
   );
 }
