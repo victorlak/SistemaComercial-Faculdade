@@ -31,6 +31,46 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 20,
     },
+    profilePictureContainer: {
+        alignSelf: 'center',
+        marginTop: 30,
+        marginBottom: 15,
+    },
+    photoContainer: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        backgroundColor: '#E0E0E0', 
+        alignSelf: 'center',
+        marginBottom: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'relative',
+      },
+    photoPlaceholder: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        backgroundColor: '#E0E0E0', 
+    },
+    profileImage: {
+        width: '100%',
+        height: '100%',
+        resizeMode: 'cover',
+        borderRadius: 50,
+    },
+    editButton: {
+        backgroundColor: '#080852',
+        width: 26,
+        height: 26,
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        borderRadius: 13,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
 
 export default styles;
