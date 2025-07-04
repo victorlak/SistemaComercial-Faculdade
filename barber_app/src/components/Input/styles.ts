@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
         fontFamily: "Poppins-Medium",
     },
     input: {
+        
         width: 332,
         height: 41,
         borderRadius: 8,
@@ -25,4 +26,6 @@ export const styles = StyleSheet.create({
         fontFamily: "Poppins-Medium",
         color: '#B2B2B2',
     },
+    
+      
 })

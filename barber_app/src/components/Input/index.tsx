@@ -12,10 +12,11 @@ export default function Input({label, style, textStyle, children, ...rest}: Prop
 
     return(
         <View style={styles.container}>
-            <Text style={[styles.label, textStyle]}>{label}</Text>
-            <TextInput style={[styles.input, style]} {...rest} >
-                {children}
-            </TextInput>
+            {label && <Text style={[styles.label, textStyle]}>{label}</Text>}
+            <View> 
+                <TextInput style={[styles.input, style]} {...rest} />
+                {children} 
+            </View>
         </View>
     
     )

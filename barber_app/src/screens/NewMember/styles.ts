@@ -26,11 +26,9 @@ const styles = StyleSheet.create({
     },
     input: {
         alignSelf: 'center',
+        
     },
-    alignmentContainer: {
-        paddingHorizontal: 20,
-        paddingVertical: 20,
-    },
+    
     profilePictureContainer: {
         alignSelf: 'center',
         marginTop: 30,
@@ -71,6 +69,23 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    dateContainer: {
+        flexDirection: 'row',
+        alignSelf: 'center',
+    },
+    addMemberButton: {
+        width: 117,
+        height: 40,
+        borderRadius: 22,
+        alignSelf: 'flex-end',
+        marginTop: 20,
+        marginBottom: 30,
+    },
+    textButton: {
+        fontSize: 14,
+        fontFamily: 'Poppins-SemiBold',
+    },
+    
 });
 
 export default styles;

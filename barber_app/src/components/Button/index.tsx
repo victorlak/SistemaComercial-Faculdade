@@ -11,8 +11,13 @@ type Props = TouchableOpacityProps & {
 export default function Button({ label, style, textStyle, children, ...rest }: Props) {
   return (
     <TouchableOpacity activeOpacity={0.8} style={[styles.button, style]} {...rest}>
-      {children}
-      <Text style={[styles.title, textStyle]}>{label}</Text>
+      {children && typeof children === 'string' ? (
+        <Text style={textStyle}>{children}</Text> 
+      ) : (
+        children 
+      )}
+
+      {label && <Text style={[styles.title, textStyle]}>{label}</Text>}
     </TouchableOpacity>
   );
 }

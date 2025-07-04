@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, Alert, Pressable, Platform} from 'react-native';
 import styles from './styles';
 import FecharIcon from '../../assets/icons/ic_fechar.svg';
 import  Input  from '../../components/Input';
@@ -8,14 +8,18 @@ import EditIcon from '../../assets/icons/ic_editar.svg';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
+import DateTimePicker, {DateTimePickerEvent} from '@react-native-community/datetimepicker';
+import DateInput from '../../components/DateInput';
+
 
 export default function NewMember() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [occupation, setOccupation] = useState('');
   const [phone, setPhone] = useState('');
-
   const [photoUri, setPhotoUri] = useState<string | null>(null);
+  const [dataIngresso, setDataIngresso] = useState('');
+  const [dataSaida, setDataSaida] = useState('');
 
   const handleChoosePhoto = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -28,6 +32,22 @@ export default function NewMember() {
     if (!result.canceled) {
       setPhotoUri(result.assets[0].uri);
     }
+  };
+
+  const handleAdicionarMembro = () => {
+    if (!dataIngresso){
+      Alert.alert('Erro', 'A data de Ingresso é obrigatória.');
+      return;
+    }
+
+    console.log({name, email, occupation, phone, photoUri, dataIngresso, dataSaida});
+    Alert.alert('Sucesso', 'Membro adicionado!', [
+      {
+        onPress: () => {
+          handleReturnToTeam();
+        }
+      }
+    ]);
   };
 
   const navigation = useNavigation<any>();
@@ -66,7 +86,7 @@ export default function NewMember() {
           </View >
         </View>
 
-        <View style={styles.alignmentContainer}>
+        
           {/* Inputs */}
           <View style={styles.input}>
             <Input label='Nome' value={name} onChangeText={setName}/>
@@ -74,8 +94,31 @@ export default function NewMember() {
             <Input label='Ocupação' value={occupation} onChangeText={setOccupation}/>
             <Input label='Telefone' value={phone} onChangeText={setPhone} keyboardType='phone-pad'/>
           </View>
+
+          {/* Datas */}
+          <View style={styles.dateContainer}> 
+              <View style={{marginLeft: 2, marginRight:21}}>
+                <DateInput 
+                  label='Ingresso'
+                  value={dataIngresso}
+                  onDateChange={setDataIngresso}
+                />
+              </View>
+              <View>
+                <DateInput 
+                  label='Saída'
+                  value={dataSaida}
+                  onDateChange={setDataSaida}
+                />
+              </View>
+          </View>
+
+        
+        <View>
+          <Button label='Adicionar' onPress={handleAdicionarMembro} style={styles.addMemberButton} textStyle={styles.textButton} />
         </View>
 
+        
       </ScrollView>
     </View>
     
