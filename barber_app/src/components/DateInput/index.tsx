@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { View, Pressable, Platform, Modal } from 'react-native'; 
+import { View, Pressable, Platform, Modal, Image } from 'react-native'; 
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import Input from '../Input';
 import Button from '../Button';
@@ -78,6 +78,7 @@ export default function DateInput({ label, value, onDateChange }: DateInputProps
                     editable={false}
                     onPressIn={toggleDatePicker}
                     placeholder='dd/mm/aaaa'
+                
                 />
             </Pressable>
 

@@ -1,4 +1,6 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+const {width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     container: {
@@ -26,9 +28,7 @@ const styles = StyleSheet.create({
     },
     input: {
         alignSelf: 'center',
-        
     },
-    
     profilePictureContainer: {
         alignSelf: 'center',
         marginTop: 30,
@@ -59,12 +59,12 @@ const styles = StyleSheet.create({
     },
     editButton: {
         backgroundColor: '#080852',
-        width: 26,
-        height: 26,
+        width: 30,
+        height: 30,
         position: 'absolute',
         bottom: 0,
         right: 0,
-        borderRadius: 13,
+        borderRadius: 20,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -73,19 +73,64 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignSelf: 'center',
     },
-    addMemberButton: {
-        width: 117,
-        height: 40,
-        borderRadius: 22,
-        alignSelf: 'flex-end',
-        marginTop: 20,
-        marginBottom: 30,
-    },
+    
     textButton: {
         fontSize: 14,
         fontFamily: 'Poppins-SemiBold',
     },
-    
+    especialidadesContainer: {
+        marginTop: 20,
+        alignItems: 'flex-start',
+    },
+    textEspecialidade: {
+        fontFamily: 'Poppins-Medium',
+        fontSize: 14,
+        color: '#000',
+        marginTop: 22,
+        marginBottom: 8,
+        alignSelf: 'center',
+        marginRight: 220,
+    },
+    especialidadeButtonsContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 10,        
+        width: '100%',
+        justifyContent: 'center',
+        maxWidth: 400,
+        alignSelf: 'center',
+    },
+    specialtyButton: {
+        backgroundColor: '#FFF',
+        height: 40,
+        borderRadius: 22,
+        paddingHorizontal: 10,
+        marginBottom: 10,
+        margin: 1,
+        borderWidth: 1,
+        borderColor: "#d0d0d0",
+        width: 150,
+    },
+    selectedSpecialtyButton: {
+        backgroundColor: '#595858',
+    },
+    specialtyButtonText: {
+      color: '#000', 
+      fontSize: 14,
+      fontFamily: 'Poppins-Medium',
+    },
+    selectedSpecialtyButtonText: {
+        color: '#FFF',
+    },
+    addMemberButton: {
+        width: 117,
+        height: 40,
+        borderRadius: 22,
+        alignSelf: 'center',
+        marginLeft: 220,
+        marginTop: 30,
+        marginBottom: 30,
+    },
 });
 
 export default styles;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, Alert, Pressable, Platform} from 'react-native';
 import styles from './styles';
 import FecharIcon from '../../assets/icons/ic_fechar.svg';
@@ -11,6 +11,10 @@ import * as ImagePicker from 'expo-image-picker';
 import DateTimePicker, {DateTimePickerEvent} from '@react-native-community/datetimepicker';
 import DateInput from '../../components/DateInput';
 
+type Service = {
+  id: string;
+  name: string;
+};
 
 export default function NewMember() {
   const [name, setName] = useState('');
@@ -20,6 +24,26 @@ export default function NewMember() {
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const [dataIngresso, setDataIngresso] = useState('');
   const [dataSaida, setDataSaida] = useState('');
+  const [servicosDisponiveis, setServicosDisponiveis] = useState<Service[]>([]);
+  const [servicosSelecionados, setServicosSelecionados] = useState<string[]>([]);
+
+  //Lista para teste de especialidades
+  const DadosServicos: Service[] = [
+    { id: '1', name: 'Corte Masculino' },
+    { id: '2', name: 'Coloração' },
+    { id: '3', name: 'Barba' },
+    { id: '4', name: 'Corte + Barba' },
+    { id: '5', name: 'Hidratação' },
+  ]; // isso tem que ser retirado e substituido pelo banco de dados
+
+  //Busca dos serviços
+  const fetchServicos = () => {
+    setServicosDisponiveis(DadosServicos);
+  };
+
+  useEffect(() => {
+    fetchServicos(); //quando o componente button é montado carrega os serviços
+  }, []);
 
   const handleChoosePhoto = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -32,6 +56,17 @@ export default function NewMember() {
     if (!result.canceled) {
       setPhotoUri(result.assets[0].uri);
     }
+  };
+
+  //Serve para saber quais botoes da especialidade foram marcados ou nao
+  const handleToggleService = (serviceId: string) => {
+    setServicosSelecionados(prevSelected => {
+      if (prevSelected.includes(serviceId)) {
+        return prevSelected.filter(id => id !== serviceId);
+      } else {
+        return [...prevSelected, serviceId];
+      }
+    });
   };
 
   const handleAdicionarMembro = () => {
@@ -81,38 +116,59 @@ export default function NewMember() {
             )}
 
             <Button style={styles.editButton} onPress={handleChoosePhoto}>
-              <EditIcon width={17} height={17} fill="#FFF" alignSelf='center'/>
+              <EditIcon width={17} height={17} fill="#FFF" />
             </Button>
           </View >
         </View>
 
         
-          {/* Inputs */}
-          <View style={styles.input}>
-            <Input label='Nome' value={name} onChangeText={setName}/>
-            <Input label='Email' value={email} onChangeText={setEmail} keyboardType='email-address'/>
-            <Input label='Ocupação' value={occupation} onChangeText={setOccupation}/>
-            <Input label='Telefone' value={phone} onChangeText={setPhone} keyboardType='phone-pad'/>
-          </View>
+        {/* Inputs */}
+        <View style={styles.input}>
+          <Input label='Nome' value={name} onChangeText={setName}/>
+          <Input label='Email' value={email} onChangeText={setEmail} keyboardType='email-address'/>
+          <Input label='Ocupação' value={occupation} onChangeText={setOccupation}/>
+          <Input label='Telefone' value={phone} onChangeText={setPhone} keyboardType='phone-pad'/>
+        </View>
 
-          {/* Datas */}
-          <View style={styles.dateContainer}> 
-              <View style={{marginLeft: 2, marginRight:21}}>
-                <DateInput 
-                  label='Ingresso'
-                  value={dataIngresso}
-                  onDateChange={setDataIngresso}
-                />
-              </View>
-              <View>
-                <DateInput 
-                  label='Saída'
-                  value={dataSaida}
-                  onDateChange={setDataSaida}
-                />
-              </View>
-          </View>
+        {/* Datas */}
+        <View style={styles.dateContainer}> 
+            <View style={{marginLeft: 2, marginRight:21}}>
+              <DateInput 
+                label='Ingresso'
+                value={dataIngresso}
+                onDateChange={setDataIngresso}
+              />
+            </View>
+            <View>
+              <DateInput 
+                label='Saída'
+                value={dataSaida}
+                onDateChange={setDataSaida}
+              />
+            </View>
+        </View>
 
+        {/* Especialidades */}
+        <View style={styles.especialidadesContainer}>
+          <Text style={styles.textEspecialidade}>Especialidade</Text>
+          <View style={styles.especialidadeButtonsContainer}>
+            {servicosDisponiveis.map(service => (
+              <Button
+                key={service.id}
+                label={service.name}
+                style={[
+                  styles.specialtyButton,
+                  servicosSelecionados.includes(service.id) ? styles.selectedSpecialtyButton : null,
+                ]}
+                textStyle={[
+                  styles.specialtyButtonText,
+                  servicosSelecionados.includes(service.id) ? styles.selectedSpecialtyButtonText : null,
+                ]}
+                onPress={() => handleToggleService(service.id)}
+              />
+            ))}
+          </View>
+        </View>  
         
         <View>
           <Button label='Adicionar' onPress={handleAdicionarMembro} style={styles.addMemberButton} textStyle={styles.textButton} />

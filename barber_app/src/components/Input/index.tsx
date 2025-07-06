@@ -11,7 +11,7 @@ type Props = TextInputProps & {
 export default function Input({label, style, textStyle, children, ...rest}: Props){
 
     return(
-        <View style={styles.container}>
+        <View style={[styles.container, style]}>
             {label && <Text style={[styles.label, textStyle]}>{label}</Text>}
             <View> 
                 <TextInput style={[styles.input, style]} {...rest} />

@@ -44,5 +44,5 @@ export const styles = StyleSheet.create({
       justifyContent: 'space-around',
       width: '100%',
       marginTop: 10,
-    }
+    },
 });

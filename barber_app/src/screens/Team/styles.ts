@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         marginTop: 50,
     },
     newMemberButton: {
-        width: 115,
+        width: 123,
         height: 30,
         justifyContent: 'center',
         alignItems: 'center',
