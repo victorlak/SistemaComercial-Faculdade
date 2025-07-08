@@ -10,38 +10,42 @@ import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePicker, {DateTimePickerEvent} from '@react-native-community/datetimepicker';
 import DateInput from '../../components/DateInput';
-
-type Service = {
-  id: string;
-  name: string;
-};
+import { doc, setDoc, getDocs } from "firebase/firestore";
+import {db} from '../../services/firebaseConfig';
+import { collection, addDoc } from "firebase/firestore";
+import { Barbeiro } from '../../types/user';
+import { Servico } from '../../types/services';
 
 export default function NewMember() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [photoUri, setPhotoUri] = useState<string | null>(null);
+  const [photoUri, setPhotoUri] = useState<string | null>('');
   const [dataIngresso, setDataIngresso] = useState('');
   const [dataSaida, setDataSaida] = useState('');
-  const [servicosDisponiveis, setServicosDisponiveis] = useState<Service[]>([]);
+  const [servicosDisponiveis, setServicosDisponiveis] = useState<Servico[]>([]);
   const [servicosSelecionados, setServicosSelecionados] = useState<string[]>([]);
 
-  //Lista para teste de especialidades
-  const DadosServicos: Service[] = [
-    { id: '1', name: 'Corte Masculino' },
-    { id: '2', name: 'Coloração' },
-    { id: '3', name: 'Barba' },
-    { id: '4', name: 'Corte + Barba' },
-    { id: '5', name: 'Hidratação' },
-  ]; // isso tem que ser retirado e substituido pelo banco de dados
-
-  //Busca dos serviços
-  const fetchServicos = () => {
-    setServicosDisponiveis(DadosServicos);
-  };
-
+  async function buscarServicos(): Promise<Servico[]> {
+    const servicosCol = collection(db, "Servicos");
+    const servicosSnapshot = await getDocs(servicosCol);
+    const servicosList: Servico[] = servicosSnapshot.docs.map(doc => {
+      return {
+        ...(doc.data() as Servico),
+        id: doc.id
+      };
+    });
+    return servicosList;
+  }
+  
   useEffect(() => {
-    fetchServicos(); //quando o componente button é montado carrega os serviços
+    async function carregarServicos() {
+      const servicos = await buscarServicos();
+      console.log(servicos);
+      setServicosDisponiveis(servicos);
+    }
+  
+    carregarServicos();
   }, []);
 
   const handleChoosePhoto = async () => {
@@ -65,10 +69,24 @@ export default function NewMember() {
       } else {
         return [...prevSelected, serviceId];
       }
+
     });
+    // console.log(servicosSelecionados);
   };
 
-  const handleAdicionarMembro = () => {
+  async function addMember(Barbeiro: Barbeiro){
+    await addDoc(collection(db, "Barbeiro"), Barbeiro);
+  }
+  
+  const  handleAdicionarMembro = async () => {
+    let novoBarbeiro: Barbeiro = {
+      nome: name,
+      email: email,
+      telefone:phone,
+      dataIngresso: dataIngresso,
+      dataSaida: dataSaida,
+      especialidades: servicosSelecionados
+    }
     if (!name.trim()){
       Alert.alert('Erro', 'O campo Nome é obrigatório.');
       return;
@@ -103,8 +121,9 @@ export default function NewMember() {
       Alert.alert('Erro', 'Por favor, selecione pelo menos uma especialidade.');
       return;
     }
+    await addMember(novoBarbeiro);
 
-    console.log({name, email, occupation, phone, photoUri, dataIngresso, dataSaida});
+    // console.log({name, email, phone, photoUri, dataIngresso, dataSaida});
     Alert.alert('Sucesso', 'Membro adicionado!', [
       {
         onPress: () => {
@@ -183,7 +202,7 @@ export default function NewMember() {
             {servicosDisponiveis.map(service => (
               <Button
                 key={service.id}
-                label={service.name}
+                label={service.nome}
                 style={[
                   styles.specialtyButton,
                   servicosSelecionados.includes(service.id) ? styles.selectedSpecialtyButton : null,

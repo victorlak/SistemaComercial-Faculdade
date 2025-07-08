@@ -1,17 +1,27 @@
-require('dotenv').config();
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-
+// Sua configuração do Firebase
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECTID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGEBUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGINGSENDERID,
-  appId: process.env.REACT_APP_FIREBASE_APPID,
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENTID
+  apiKey: "AIzaSyBpD4NNFcw1bbJi2rMGy2pMMMQdxgywMjQ",
+  authDomain: "barbearia-oliveira-700b0.firebaseapp.com",
+  projectId: "barbearia-oliveira-700b0",
+  storageBucket: "barbearia-oliveira-700b0.firebasestorage.app",
+  messagingSenderId: "641155618768",
+  appId: "1:641155618768:web:075b936703fc6036334bd5",
+  measurementId: "G-3JHFJPMQHG"
 };
 
+// Inicializa o Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+
+// Inicializa o Firestore
+const firebaseBD = getFirestore(app);
+
+export const db = getFirestore(app);
+
+// Inicializa o Auth
+const auth = getAuth(app);
+
+export { firebaseBD, auth};
