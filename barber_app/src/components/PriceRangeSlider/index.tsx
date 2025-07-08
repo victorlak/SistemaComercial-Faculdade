@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { View, Text, PanResponder } from 'react-native';
 
-// Importando os estilos do arquivo separado
 import { styles } from './styles';
 
 type Props = {
@@ -26,7 +25,6 @@ export default function PriceRangeSlider({ range, totalMin, totalMax, onRangeCha
     return Math.max(totalMin, Math.min(totalMax, value));
   };
 
-  // --- Lógica dos Gestos (PanResponder) ---
   const minPanResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -53,7 +51,6 @@ export default function PriceRangeSlider({ range, totalMin, totalMax, onRangeCha
     })
   ).current;
 
-  // --- Cálculo das posições para o estilo ---
   const minPositionPercent = getPercentage(range.min);
   const maxPositionPercent = getPercentage(range.max);
   const activeTrackWidth = maxPositionPercent - minPositionPercent;
