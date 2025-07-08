@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
         backgroundColor: '#11182711',
         paddingHorizontal: 20,
         width: 120,
+        height: 35,
     },
     textButtonDate: {
         fontSize: 14,

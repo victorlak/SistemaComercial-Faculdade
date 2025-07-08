@@ -19,7 +19,6 @@ type Service = {
 export default function NewMember() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [occupation, setOccupation] = useState('');
   const [phone, setPhone] = useState('');
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const [dataIngresso, setDataIngresso] = useState('');
@@ -70,8 +69,38 @@ export default function NewMember() {
   };
 
   const handleAdicionarMembro = () => {
+    if (!name.trim()){
+      Alert.alert('Erro', 'O campo Nome é obrigatório.');
+      return;
+    }
+
+    if (!email.trim()){
+      Alert.alert('Erro', 'O campo Email é obrigatório.');
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)){
+      Alert.alert('Erro', 'Por favor, insira um email válido.');
+      return;
+    }
+
+    if (!phone.trim()){
+      Alert.alert('Erro', 'O campo Telefone é obrigatório');
+      return;
+    }
+    const phoneRegex = /^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/;
+    if (!phoneRegex.test(phone)){
+      Alert.alert('Erro', 'Por favor, insira um número de telefone válido');
+      return;
+    }
+
     if (!dataIngresso){
       Alert.alert('Erro', 'A data de Ingresso é obrigatória.');
+      return;
+    }
+
+    if (servicosSelecionados.length === 0){
+      Alert.alert('Erro', 'Por favor, selecione pelo menos uma especialidade.');
       return;
     }
 
@@ -124,10 +153,9 @@ export default function NewMember() {
         
         {/* Inputs */}
         <View style={styles.input}>
-          <Input label='Nome' value={name} onChangeText={setName}/>
-          <Input label='Email' value={email} onChangeText={setEmail} keyboardType='email-address'/>
-          <Input label='Ocupação' value={occupation} onChangeText={setOccupation}/>
-          <Input label='Telefone' value={phone} onChangeText={setPhone} keyboardType='phone-pad'/>
+          <Input label='Nome' value={name} onChangeText={setName} placeholder='Digite o nome'/>
+          <Input label='Email' value={email} onChangeText={setEmail} keyboardType='email-address' placeholder='Digite o email'/>
+          <Input label='Telefone' value={phone} onChangeText={setPhone} keyboardType='phone-pad' placeholder='(DD) 9XXXX-XXXX'/>
         </View>
 
         {/* Datas */}
