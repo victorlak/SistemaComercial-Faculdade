@@ -17,14 +17,14 @@ export const styles = StyleSheet.create({
     marginBottom: 4,
   },
   itemCliente: {
-    fontFamily: 'Poppins-Regular', 
+    fontFamily: 'Poppins-Regular',
     fontSize: 14,
     color: '#666666',
   },
   itemPreco: {
     fontFamily: 'Poppins-Bold',
     fontSize: 16,
-    color: '#2E8B57', 
+    color: '#2E8B57',
     marginBottom: 4,
   },
   itemData: {
@@ -32,4 +32,8 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666666',
   },
+  serviceItem: {
+    width: '48%',
+    marginBottom: 16,
+  }
 });

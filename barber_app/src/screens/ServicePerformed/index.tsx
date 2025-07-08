@@ -3,7 +3,6 @@ import { SafeAreaView, View, Text, FlatList, TouchableOpacity } from 'react-nati
 import { styles } from './styles';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 
-// Importações dos seus componentes e ícones
 import SetaEsquerda from '../../assets/icons/ic_setaEsquerda.svg';
 import SearchBar from '../../components/Search';
 import { CardInfo } from '../../components/CardInfo';
@@ -22,8 +21,6 @@ import BarbaIconBranco from '../../assets/images/img_barbaBranco.png';
 import CorteBarbaIconBranco from '../../assets/images/img_corteBarbaBranco.png';
 import HidratacaoIconBranco from '../../assets/images/img_hidratacaoBranco.png';
 
-// --- Tipos e Dados ---
-
 type ServiceData = {
   id: string;
   nome: string;
@@ -32,18 +29,16 @@ type ServiceData = {
   data: string;
 };
 
-// Define os tipos para os parâmetros da rota
 type ServicePerformedRouteParams = {
     filters?: {
         services: string[];
-        barbers: string[]; // Alterado para um array
+        barbers: string[];
         dateOption: string;
         price: { min: number; max: number };
     };
 };
 type ServicePerformedRouteProp = RouteProp<{ params: ServicePerformedRouteParams }, 'params'>;
 
-// Dados mocados (substitua pela sua chamada de API se necessário)
 const CATEGORIES_DATA: Category[] = [
   { id: '1', label: 'Corte', iconDefault: CorteIconPreto, iconSelected: CorteIconBranco },
   { id: '2', label: 'Coloração', iconDefault: ColoracaoIconPreto, iconSelected: ColoracaoIconBranco },
@@ -67,7 +62,6 @@ export default function ServicePerformed() {
   const route = useRoute<ServicePerformedRouteProp>();
   const receivedFilters = route.params?.filters;
 
-  // Verifica se filtros avançados estão ativos para mudar a cor do botão
   const areFiltersActive = !!receivedFilters;
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -77,23 +71,18 @@ export default function ServicePerformed() {
   useEffect(() => {
     let services = ALL_SERVICES_DB;
 
-    // Se houver filtros avançados da tela 'Filters', aplique-os
     if (receivedFilters) {
-        // Filtro por tipo de serviço
         if (receivedFilters.services.length > 0) {
             services = services.filter(service => receivedFilters.services.includes(service.nome));
         }
-        // Filtro por barbeiro (cliente)
         if (receivedFilters.barbers.length > 0) {
             services = services.filter(service => receivedFilters.barbers.includes(service.cliente));
         }
-        // Filtro por faixa de preço
         if (receivedFilters.price) {
             services = services.filter(service => 
                 service.preco >= receivedFilters.price.min && service.preco <= receivedFilters.price.max
             );
         }
-        // Filtro por data
         if (receivedFilters.dateOption) {
             const now = new Date();
             const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -119,7 +108,6 @@ export default function ServicePerformed() {
             });
         }
     } 
-    // Senão, aplique os filtros rápidos da própria tela
     else if (selectedCategory) {
         const categoryLabel = CATEGORIES_DATA.find(cat => cat.id === selectedCategory)?.label;
         if (categoryLabel) {
@@ -127,7 +115,6 @@ export default function ServicePerformed() {
         }
     }
 
-    // O filtro da barra de busca sempre é aplicado sobre o resultado anterior
     if (searchQuery.trim() !== '') {
         const lowercasedQuery = searchQuery.toLowerCase();
         services = services.filter(service =>
@@ -137,7 +124,7 @@ export default function ServicePerformed() {
     }
     
     setFilteredServices(services);
-  }, [searchQuery, selectedCategory, receivedFilters]); // Roda o efeito quando qualquer filtro muda
+  }, [searchQuery, selectedCategory, receivedFilters]);
 
   const handleGoBack = () => navigation.goBack();
   const handleFilter = () => navigation.navigate('Filters');

@@ -1,8 +1,9 @@
 import { TextInput, TextInputProps, View, Text } from "react-native";
 import {styles} from "./styles"
+import React from "react";
 
 interface CustomInputProps extends TextInputProps {
-    label?: string; // Torna o label opcional
+    label?: string;
 }
 
 export function Input({label, ...rest}: CustomInputProps){

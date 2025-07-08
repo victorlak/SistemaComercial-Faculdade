@@ -11,7 +11,7 @@ export default function Index() {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            navigation.navigate('Login', {}, { replace: true });//NAVIGATE LOGIN
+            navigation.navigate('Login', {}, { replace: true });
         }, 3000);
 
         return () => clearTimeout(timer);

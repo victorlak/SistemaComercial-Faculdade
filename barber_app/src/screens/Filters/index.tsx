@@ -1,40 +1,38 @@
 import React, { useState } from 'react';
 import {
-  SafeAreaView,
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-  ViewStyle,
-  TextStyle,
-  TouchableOpacityProps,
+    SafeAreaView,
+    Text,
+    View,
+    TouchableOpacity,
+    ScrollView,
+    ViewStyle,
+    TextStyle,
+    TouchableOpacityProps,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
-// Importando os estilos e componentes
 import { styles } from './styles';
-import PriceRangeSlider from '../../components/PriceRangeSlider'; // Ajuste o caminho se necessário
-import CloseIcon from '../../assets/icons/ic_fechar.svg'; // Ajuste o caminho se necessário
+import PriceRangeSlider from '../../components/PriceRangeSlider';
+import CloseIcon from '../../assets/icons/ic_fechar.svg';
 
-// --- Componente de Botão Principal ---
 type ButtonProps = TouchableOpacityProps & {
-  label: string;
-  style?: ViewStyle;
-  textStyle?: TextStyle;
-};
-const MainButton = ({ label, style, textStyle, ...rest }: ButtonProps) => {
-  return (
-    <TouchableOpacity activeOpacity={0.8} style={[styles.mainButton, style]} {...rest}>
-      <Text style={[styles.mainButtonTitle, textStyle]}>{label}</Text>
-    </TouchableOpacity>
-  );
+    label: string;
+    style?: ViewStyle;
+    textStyle?: TextStyle;
 };
 
-// --- Componente de Botão de Seleção ---
+const MainButton = ({ label, style, textStyle, ...rest }: ButtonProps) => {
+    return (
+        <TouchableOpacity activeOpacity={0.8} style={[styles.mainButton, style]} {...rest}>
+            <Text style={[styles.mainButtonTitle, textStyle]}>{label}</Text>
+        </TouchableOpacity>
+    );
+};
+
 type ToggleButtonProps = TouchableOpacityProps & {
     label: string;
     isSelected: boolean;
 };
+
 const ToggleButton = ({ label, isSelected, ...rest }: ToggleButtonProps) => {
     return (
         <TouchableOpacity
@@ -49,11 +47,11 @@ const ToggleButton = ({ label, isSelected, ...rest }: ToggleButtonProps) => {
     );
 };
 
-// --- Componente de Seção ---
 type FilterSectionProps = {
     title: string;
     children: React.ReactNode;
 };
+
 const FilterSection = ({ title, children }: FilterSectionProps) => (
     <View style={styles.sectionContainer}>
         <Text style={styles.sectionTitle}>{title}</Text>
@@ -63,14 +61,14 @@ const FilterSection = ({ title, children }: FilterSectionProps) => (
 
 export default function Filters() {
     const navigation = useNavigation();
+    
     const [selectedServices, setSelectedServices] = useState<string[]>([]);
     const [selectedBarbers, setSelectedBarbers] = useState<string[]>([]);
-    const [selectedDateOption, setSelectedDateOption] = useState<string>('');
+    const [selectedDateOptions, setSelectedDateOptions] = useState<string[]>([]); // Modificado de string para array
     const [priceRange, setPriceRange] = useState({ min: 20, max: 80 });
-
+    
     const TOTAL_MIN_PRICE = 20;
     const TOTAL_MAX_PRICE = 80;
-
     const toggleService = (service: string) => {
         setSelectedServices(prev =>
             prev.includes(service) ? prev.filter(s => s !== service) : [...prev, service]
@@ -79,21 +77,21 @@ export default function Filters() {
 
     const toggleBarber = (barber: string) => {
         setSelectedBarbers(prev =>
-            prev.includes(barber)
-                ? prev.filter(b => b !== barber)
-                : [...prev, barber]
+            prev.includes(barber) ? prev.filter(b => b !== barber) : [...prev, barber]
         );
     };
 
-    const handleSelectDateOption = (option: string) => {
-        setSelectedDateOption(option);
+    const toggleDateOption = (option: string) => {
+        setSelectedDateOptions(prev =>
+            prev.includes(option) ? prev.filter(o => o !== option) : [...prev, option]
+        );
     };
 
     const handleApplyFilters = () => {
         const filters = {
             services: selectedServices,
             barbers: selectedBarbers,
-            dateOption: selectedDateOption,
+            dateOptions: selectedDateOptions,
             price: priceRange,
         };
         navigation.navigate('ServicePerformed', { filters });
@@ -146,14 +144,10 @@ export default function Filters() {
                                 <ToggleButton
                                     key={option}
                                     label={option}
-                                    isSelected={selectedDateOption === option}
-                                    onPress={() => handleSelectDateOption(option)}
+                                    isSelected={selectedDateOptions.includes(option)}
+                                    onPress={() => toggleDateOption(option)}
                                 />
                             ))}
-                            <TouchableOpacity style={styles.dateInput}>
-                                <Text style={styles.dateInputText}>dd/mm/aaaa</Text>
-                                 {/* COLOQUE SEU ÍCONE DE CALENDÁRIO AQUI */}
-                            </TouchableOpacity>
                         </View>
                     </FilterSection>
 

@@ -74,7 +74,6 @@ export default function Index() {
         />
       </View>
 
-      {/* Campo de Senha com botão de visibilidade */}
       <View>
         <Input
           onChangeText={setSenha}
@@ -91,7 +90,6 @@ export default function Index() {
         />
       </View>
 
-      {/* Mensagens de erro e recuperação */}
       <View style={{ marginTop: 10 }}>
         {erro && (
           <Text style={[styles.errorText, { color: '#ca2c17' }]}>
@@ -105,12 +103,10 @@ export default function Index() {
         )}
       </View>
 
-      {/* Botão de Entrar */}
       <View style={styles.button}>
         <Button onPress={handleLogin} label="Entrar" />
       </View>
 
-      {/* Link de recuperação de senha */}
       <TouchableOpacity 
         style={styles.forgotPasswordLink}
         onPress={handleRecuperacaoSenha}
