@@ -12,10 +12,9 @@ import {
 import { useNavigation } from '@react-navigation/native';
 
 import { styles } from './styles';
-import PriceRangeSlider from '../../components/PriceRangeSlider'; // Ajuste o caminho se necessário
-import CloseIcon from '../../assets/icons/ic_fechar.svg'; // Ajuste o caminho se necessário
+import PriceRangeSlider from '../../components/PriceRangeSlider';
+import CloseIcon from '../../assets/icons/ic_fechar.svg';
 
-// --- Componente de Botão Principal ---
 type ButtonProps = TouchableOpacityProps & {
   label: string;
   style?: ViewStyle;
@@ -29,7 +28,6 @@ const MainButton = ({ label, style, textStyle, ...rest }: ButtonProps) => {
   );
 };
 
-// --- Componente de Botão de Seleção ---
 type ToggleButtonProps = TouchableOpacityProps & {
     label: string;
     isSelected: boolean;
@@ -48,7 +46,6 @@ const ToggleButton = ({ label, isSelected, ...rest }: ToggleButtonProps) => {
     );
 };
 
-// --- Componente de Seção ---
 type FilterSectionProps = {
     title: string;
     children: React.ReactNode;
@@ -149,10 +146,9 @@ export default function Filters() {
                                     onPress={() => handleSelectDateOption(option)}
                                 />
                             ))}
-                            <TouchableOpacity style={styles.dateInput}>
+                            {/* <TouchableOpacity style={styles.dateInput}>
                                 <Text style={styles.dateInputText}>dd/mm/aaaa</Text>
-                                 {/* COLOQUE SEU ÍCONE DE CALENDÁRIO AQUI */}
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                         </View>
                     </FilterSection>
 

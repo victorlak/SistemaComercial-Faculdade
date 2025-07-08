@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
     },
     scrollView: {
         paddingHorizontal: 20,
-        paddingBottom: 100, // Espaço para o botão fixo no rodapé
+        paddingBottom: 100,
     },
     sectionContainer: {
         marginTop: 24,
@@ -50,18 +50,16 @@ export const styles = StyleSheet.create({
         borderColor: '#CBD5E0',
     },
     toggleButtonSelected: {
-        backgroundColor: '#4A5568',
-        borderColor: '#4A5568',
+        backgroundColor: '#000',
+        borderColor: '#000',
     },
     toggleButtonText: {
         fontSize: 14,
-        color: '#4A5568',
-        // fontFamily: 'Poppins-Regular',
+        color: '#000',
     },
     toggleButtonTextSelected: {
         color: '#FFF',
         fontWeight: '500',
-        // fontFamily: 'Poppins-Medium',
     },
     dateInput: {
         flexDirection: 'row',
@@ -80,15 +78,14 @@ export const styles = StyleSheet.create({
     },
     priceLabel: {
         fontSize: 16,
-        color: '#4A5568',
+        color: '#000',
         textAlign: 'center',
         marginBottom: 16,
     },
-    // Estilos para o slider visual
     sliderContainer: {
         height: 20,
         justifyContent: 'center',
-        marginHorizontal: 8, // Garante que os handles não fiquem colados na borda
+        marginHorizontal: 8,
     },
     sliderTrack: {
         height: 3,
@@ -99,13 +96,11 @@ export const styles = StyleSheet.create({
         width: 18,
         height: 18,
         borderRadius: 9,
-        backgroundColor: '#4A5568',
+        backgroundColor: '#000',
         position: 'absolute',
-        // Centraliza o handle verticalmente na linha do track
         top: '50%',
         transform: [{ translateY: -9 }, { translateX: -9 }],
     },
-    // ---
     footer: {
         position: 'absolute',
         bottom: 0,
@@ -119,7 +114,7 @@ export const styles = StyleSheet.create({
     mainButton: {
         width: '100%',
         height: 50,
-        backgroundColor: "#4A5568",
+        backgroundColor: "#000",
         borderRadius: 16,
         justifyContent: "center",
         alignItems: "center",
