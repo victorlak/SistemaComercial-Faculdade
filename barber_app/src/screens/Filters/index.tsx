@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-// Importando os estilos e componentes
 import { styles } from './styles';
 import PriceRangeSlider from '../../components/PriceRangeSlider'; // Ajuste o caminho se necessário
 import CloseIcon from '../../assets/icons/ic_fechar.svg'; // Ajuste o caminho se necessário
