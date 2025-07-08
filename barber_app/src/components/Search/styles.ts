@@ -35,14 +35,13 @@ export const styles = StyleSheet.create({
     borderRadius: 26,
     borderWidth: 1,
     borderColor: '#E0E0E0',
-    backgroundColor: '#FFFFFF', // Cor padrão
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  // Adicione este novo estilo para o botão ativo
   filterButtonActive: {
-    backgroundColor: '#E0E0E0', // Cor cinza para quando o filtro estiver ativo
-    borderColor: '#D1D1D6', // Borda um pouco mais escura para combinar
+    backgroundColor: '#E0E0E0',
+    borderColor: '#D1D1D6',
   },
   filterIconImage: {
     width: 24,

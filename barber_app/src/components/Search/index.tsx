@@ -9,7 +9,7 @@ interface SearchBarProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   onFilterPress: () => void;
-  isFilterActive?: boolean; // 1. Adicione a nova propriedade aqui
+  isFilterActive?: boolean;
 }
 
 export default function SearchBar({ searchQuery, setSearchQuery, onFilterPress, isFilterActive }: SearchBarProps) {
@@ -26,7 +26,6 @@ export default function SearchBar({ searchQuery, setSearchQuery, onFilterPress, 
         />
       </View>
       
-      {/* 2. Aplique o estilo condicional aqui */}
       <TouchableOpacity 
         onPress={onFilterPress} 
         style={[
