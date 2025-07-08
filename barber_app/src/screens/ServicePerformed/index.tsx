@@ -1,22 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { styles } from './styles';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 
+// Importações dos seus componentes e ícones
 import SetaEsquerda from '../../assets/icons/ic_setaEsquerda.svg';
 import SearchBar from '../../components/Search';
 import { CardInfo } from '../../components/CardInfo';
 import { CategoryFilter, Category } from '../../components/CategoryFilter';
 import ServiceItemCard from '../../components/ServiceItemCard';
-
-type ServiceData = {
-  id: string;
-  nome: string;
-  cliente: string;
-  preco: number;
-  data: string;
-};
-
+import { NavBar } from '../../components/NavBar';
 import TesouraIcon from '../../assets/images/img_tesoura.png';
 import CorteIconPreto from '../../assets/images/img_cortePreto.png';
 import ColoracaoIconPreto from '../../assets/images/img_coloracaoPreto.png';
@@ -28,8 +21,29 @@ import ColoracaoIconBranco from '../../assets/images/img_coloracaoBranco.png';
 import BarbaIconBranco from '../../assets/images/img_barbaBranco.png';
 import CorteBarbaIconBranco from '../../assets/images/img_corteBarbaBranco.png';
 import HidratacaoIconBranco from '../../assets/images/img_hidratacaoBranco.png';
-import { NavBar } from '../../components/NavBar';
 
+// --- Tipos e Dados ---
+
+type ServiceData = {
+  id: string;
+  nome: string;
+  cliente: string;
+  preco: number;
+  data: string;
+};
+
+// Define os tipos para os parâmetros da rota
+type ServicePerformedRouteParams = {
+    filters?: {
+        services: string[];
+        barbers: string[]; // Alterado para um array
+        dateOption: string;
+        price: { min: number; max: number };
+    };
+};
+type ServicePerformedRouteProp = RouteProp<{ params: ServicePerformedRouteParams }, 'params'>;
+
+// Dados mocados (substitua pela sua chamada de API se necessário)
 const CATEGORIES_DATA: Category[] = [
   { id: '1', label: 'Corte', iconDefault: CorteIconPreto, iconSelected: CorteIconBranco },
   { id: '2', label: 'Coloração', iconDefault: ColoracaoIconPreto, iconSelected: ColoracaoIconBranco },
@@ -50,30 +64,80 @@ const ALL_SERVICES_DB: ServiceData[] = [
 
 export default function ServicePerformed() {
   const navigation = useNavigation();
+  const route = useRoute<ServicePerformedRouteProp>();
+  const receivedFilters = route.params?.filters;
+
+  // Verifica se filtros avançados estão ativos para mudar a cor do botão
+  const areFiltersActive = !!receivedFilters;
+
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [filteredServices, setFilteredServices] = useState<ServiceData[]>([]);
+  const [filteredServices, setFilteredServices] = useState<ServiceData[]>(ALL_SERVICES_DB);
 
   useEffect(() => {
     let services = ALL_SERVICES_DB;
 
-    if (selectedCategory) {
-      const categoryLabel = CATEGORIES_DATA.find(cat => cat.id === selectedCategory)?.label;
-      if (categoryLabel) {
-        services = services.filter(service => service.nome === categoryLabel);
-      }
+    // Se houver filtros avançados da tela 'Filters', aplique-os
+    if (receivedFilters) {
+        // Filtro por tipo de serviço
+        if (receivedFilters.services.length > 0) {
+            services = services.filter(service => receivedFilters.services.includes(service.nome));
+        }
+        // Filtro por barbeiro (cliente)
+        if (receivedFilters.barbers.length > 0) {
+            services = services.filter(service => receivedFilters.barbers.includes(service.cliente));
+        }
+        // Filtro por faixa de preço
+        if (receivedFilters.price) {
+            services = services.filter(service => 
+                service.preco >= receivedFilters.price.min && service.preco <= receivedFilters.price.max
+            );
+        }
+        // Filtro por data
+        if (receivedFilters.dateOption) {
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+            services = services.filter(service => {
+                const [datePart] = service.data.split(' ');
+                const [day, month, year] = datePart.split('/').map(Number);
+                const serviceDate = new Date(year, month - 1, day);
+
+                switch (receivedFilters.dateOption) {
+                    case 'Hoje':
+                        return serviceDate.toDateString() === today.toDateString();
+                    case 'Últimos 7 dias':
+                        const sevenDaysAgo = new Date(today);
+                        sevenDaysAgo.setDate(today.getDate() - 7);
+                        return serviceDate >= sevenDaysAgo && serviceDate <= today;
+                    case 'Este mês':
+                        return serviceDate.getMonth() === today.getMonth() &&
+                               serviceDate.getFullYear() === today.getFullYear();
+                    default:
+                        return true;
+                }
+            });
+        }
+    } 
+    // Senão, aplique os filtros rápidos da própria tela
+    else if (selectedCategory) {
+        const categoryLabel = CATEGORIES_DATA.find(cat => cat.id === selectedCategory)?.label;
+        if (categoryLabel) {
+            services = services.filter(service => service.nome === categoryLabel);
+        }
     }
 
+    // O filtro da barra de busca sempre é aplicado sobre o resultado anterior
     if (searchQuery.trim() !== '') {
-      const lowercasedQuery = searchQuery.toLowerCase();
-      services = services.filter(service =>
-        service.nome.toLowerCase().includes(lowercasedQuery) ||
-        service.cliente.toLowerCase().includes(lowercasedQuery)
-      );
+        const lowercasedQuery = searchQuery.toLowerCase();
+        services = services.filter(service =>
+            service.nome.toLowerCase().includes(lowercasedQuery) ||
+            service.cliente.toLowerCase().includes(lowercasedQuery)
+        );
     }
     
     setFilteredServices(services);
-  }, [searchQuery, selectedCategory]);
+  }, [searchQuery, selectedCategory, receivedFilters]); // Roda o efeito quando qualquer filtro muda
 
   const handleGoBack = () => navigation.goBack();
   const handleFilter = () => navigation.navigate('Filters');
@@ -103,6 +167,7 @@ export default function ServicePerformed() {
                         searchQuery={searchQuery}
                         setSearchQuery={setSearchQuery}
                         onFilterPress={handleFilter}
+                        isFilterActive={areFiltersActive}
                     />
                     <CardInfo
                         label="Total de Seriços Realizados"
