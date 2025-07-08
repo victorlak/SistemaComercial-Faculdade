@@ -13,7 +13,6 @@ type Props = {
 export default function PriceRangeSlider({ range, totalMin, totalMax, onRangeChange }: Props) {
   const sliderLayoutRef = useRef({ x: 0, width: 0 });
 
-  // --- Lógica de cálculo ---
   const getPercentage = (value: number) => {
     if (totalMax === totalMin) return 0;
     return ((value - totalMin) / (totalMax - totalMin)) * 100;
