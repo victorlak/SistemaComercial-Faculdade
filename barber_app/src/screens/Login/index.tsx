@@ -106,8 +106,8 @@ export default function Index() {
       </View>
 
       {/* Botão de Entrar */}
-      <View style={styles.button}>
-        <Button onPress={handleLogin} label="Entrar" />
+      <View style={styles.buttonContainer}>
+        <Button onPress={handleLogin} label="Entrar" style={styles.buttonEntrar}/>
       </View>
 
       {/* Link de recuperação de senha */}
