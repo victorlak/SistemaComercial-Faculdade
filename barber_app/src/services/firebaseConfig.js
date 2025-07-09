@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
-=======
 // require('dotenv').config();
 
 // import { initializeApp } from "firebase/app";
@@ -29,7 +24,6 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { getAnalytics } from "firebase/analytics";
->>>>>>> dev_base
 
 // Sua configuração do Firebase
 const firebaseConfig = {
@@ -42,20 +36,6 @@ const firebaseConfig = {
   measurementId: "G-3JHFJPMQHG"
 };
 
-<<<<<<< HEAD
-// Inicializa o Firebase
-const app = initializeApp(firebaseConfig);
-
-// Inicializa o Firestore
-const firebaseBD = getFirestore(app);
-
-export const db = getFirestore(app);
-
-// Inicializa o Auth
-const auth = getAuth(app);
-
-export { firebaseBD, auth};
-=======
   const app = initializeApp(firebaseConfig);
   export const db = getFirestore(app);
   export const auth = getAuth(app);
@@ -71,4 +51,3 @@ export const register = (email, password) =>
 
 export const onUserChanged = (callback) =>
   onAuthStateChanged(auth, callback);
->>>>>>> dev_base

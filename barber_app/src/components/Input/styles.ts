@@ -4,20 +4,14 @@ export const styles = StyleSheet.create({
     container: {
         width: '100%',
         marginTop: 15,
-<<<<<<< HEAD
         
-=======
->>>>>>> dev_base
     },
     label: {
         fontSize: 14,
         fontWeight: 'medium',
         color: '#000000',
         marginTop: 10,
-<<<<<<< HEAD
         marginBottom: 8,
-=======
->>>>>>> dev_base
         fontFamily: "Poppins-Medium",
     },
     input: {
@@ -32,9 +26,6 @@ export const styles = StyleSheet.create({
         fontFamily: "Poppins-Medium",
         color: '#B2B2B2',
     },
-<<<<<<< HEAD
     
       
-=======
->>>>>>> dev_base
 })

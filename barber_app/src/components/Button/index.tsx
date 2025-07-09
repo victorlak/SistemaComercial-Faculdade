@@ -1,6 +1,6 @@
-<<<<<<< HEAD
 import { TextStyle, ViewStyle, TouchableOpacity, Text, TouchableOpacityProps, StyleProp } from "react-native";
 import { styles } from './styles';
+import React from "react";
 
 type Props = TouchableOpacityProps & {
     label?: string;
@@ -14,21 +14,6 @@ export default function Button({ label, style, textStyle, children, ...rest }: P
     <TouchableOpacity activeOpacity={0.8} style={[styles.button, style]} {...rest}>
       {children} 
       {label && <Text style={[styles.title, textStyle]}>{label}</Text>}
-=======
-import { TextStyle, ViewStyle, TouchableOpacity, Text, TouchableOpacityProps } from "react-native";
-import { styles } from './styles';
-
-type Props = TouchableOpacityProps & {
-    label: string;
-    style?: ViewStyle;
-    textStyle?: TextStyle;
-}
-
-export default function Button({ label, style, textStyle, ...rest }: Props) {
-  return (
-    <TouchableOpacity activeOpacity={0.8} style={[styles.button, style]} {...rest}>
-      <Text style={[styles.title, textStyle]}>{label}</Text>
->>>>>>> dev_base
     </TouchableOpacity>
   );
 }
