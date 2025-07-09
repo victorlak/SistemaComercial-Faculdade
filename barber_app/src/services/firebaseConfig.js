@@ -25,6 +25,7 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { getAnalytics } from "firebase/analytics";
 
+// Sua configuração do Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBpD4NNFcw1bbJi2rMGy2pMMMQdxgywMjQ",
   authDomain: "barbearia-oliveira-700b0.firebaseapp.com",
