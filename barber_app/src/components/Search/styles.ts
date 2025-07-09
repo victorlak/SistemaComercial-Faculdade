@@ -13,11 +13,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     height: 52,
-    // Deixando o campo de busca mais arredondado, como na imagem
     borderRadius: 26, 
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#E0E0E0', // Um cinza um pouco mais visível para a borda
+    borderColor: '#E0E0E0',
   },
   icon: {
     marginRight: 12,
@@ -33,14 +32,16 @@ export const styles = StyleSheet.create({
     marginLeft: 12,
     height: 52,
     width: 52,
-    // Estilo para criar o botão circular com borda
-    borderRadius: 26, // Metade da altura/largura para um círculo perfeito
+    borderRadius: 26,
     borderWidth: 1,
     borderColor: '#E0E0E0',
     backgroundColor: '#FFFFFF',
-    // Para centralizar o ícone dentro do círculo
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  filterButtonActive: {
+    backgroundColor: '#E0E0E0',
+    borderColor: '#D1D1D6',
   },
   filterIconImage: {
     width: 24,

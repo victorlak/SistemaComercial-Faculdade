@@ -7,7 +7,7 @@ type IconType = React.FC<SvgProps> | ImageSourcePropType;
 
 type Props = {
   label: string;
-  iconDefault: IconType;
+  iconDefault: IconType ;
   iconSelected: IconType;
   isSelected: boolean;
   onPress: () => void;
@@ -34,7 +34,7 @@ export const CategoryButton = ({
           <Icon 
             width={20} 
             height={20} 
-            color={isSelected ? '#FFFFFF' : '#1C1C1E'} 
+            color={isSelected ? '#FFFFFF' : '#595858'} 
           />
         ) : (
           <Image 
