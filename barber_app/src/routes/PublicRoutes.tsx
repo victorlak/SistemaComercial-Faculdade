@@ -17,7 +17,7 @@ function PublicRouter() {
   return (
     <Stack.Navigator 
       screenOptions={{ headerShown: false }}
-      initialRouteName="NewService"
+      initialRouteName="Splash"
     >
       <Stack.Screen 
         name="NewService" 
