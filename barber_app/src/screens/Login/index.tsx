@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
 import Button from "../../components/Button"
 import { Input } from "../../components/Input"
 import styles from './styles'
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { auth, db, login, register } from "../../services/firebaseConfig";
 import React from "react"
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth"
@@ -16,6 +16,7 @@ export default function Index() {
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const navigation = useNavigation();
 
+  
   const handleLogin = async () => {
     setErro('');
     setMensagemRecuperacao('');
@@ -57,6 +58,7 @@ export default function Index() {
       setMensagemRecuperacao('Erro ao enviar email de recuperação. Verifique seu email.');
     }
   };
+
 
   return (
     <View style={styles.container}>

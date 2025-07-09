@@ -2,6 +2,35 @@ import { StyleSheet } from 'react-native';
 
 
 export const styles = StyleSheet.create({
+  deletedButton: {
+   backgroundColor: 'transparent',
+    borderColor: 'red',
+    width: 'fit-content',
+    borderRadius: 5,
+    height: 30,
+    borderWidth: 1,
+    padding: 10, 
+  },
+  editButton: {
+    backgroundColor: 'transparent',
+    borderRadius: 5,
+    width: 'fit-content',
+    height: 30,
+    borderColor: 'blue',
+    borderWidth: 1,
+    padding: 10, 
+  },
+  textEditButton: {
+    color: 'blue',
+    fontFamily: 'Poppins-Bold',
+    fontSize: 16,
+  },
+  textDeleteButton: {
+    color: 'red',
+    fontSize: 16,
+    fontFamily: 'Poppins-Bold',
+  },
+
   allComponent: {
     marginTop: 20,
     fontFamily: 'Poppins-Bold',
@@ -35,8 +64,14 @@ export const styles = StyleSheet.create({
     fontSize:18,
     color: '#4F4F4F'
   },
+
   styleButton:{
-    marginTop:20
+    borderTopColor: '#ddd',
+    justifyContent: 'flex-start',
+    gap: 10,
+    borderTopWidth: 1,
+    paddingTop: 10,
+    marginTop: 10,
   }
 
 });

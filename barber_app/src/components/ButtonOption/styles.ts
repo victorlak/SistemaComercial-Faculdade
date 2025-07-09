@@ -16,9 +16,5 @@ export const styles = StyleSheet.create({
         fontFamily: "Poppins-Medium",
     },
 
-     container: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-    }
+   
 })
