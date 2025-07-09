@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import CardContainer from '../CardContainer'; 
+import CardContainer from '../CardContainer';
 import { styles } from './styles';
 
 type ServiceData = {
@@ -22,7 +22,6 @@ const ServiceItemCard = ({ data }: Props) => {
           <Text style={styles.itemNomeServico}>{data.nome}</Text>
           <Text style={styles.itemCliente}>{data.cliente}</Text>
         </View>
-
         <View style={styles.itemColunaDireita}>
           <Text style={styles.itemPreco}>{`R$ ${data.preco.toFixed(2).replace('.', ',')}`}</Text>
           <Text style={styles.itemData}>{data.data}</Text>

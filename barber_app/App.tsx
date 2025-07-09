@@ -1,6 +1,6 @@
 import React from 'react';
-import {AppRouter} from './src/routes';
 import { useFonts } from 'expo-font';
+import {AppRouter} from './src/routes';
 
 export default function App() {
   
