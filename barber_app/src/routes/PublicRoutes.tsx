@@ -6,6 +6,7 @@ import Home from '../screens/Home';
 import Services from '../screens/Service';
 import Team from '../screens/Team';
 import Profile from '../screens/Profile';
+import NewMember from '../screens/NewMember';
 import ServicePerformed from '../screens/ServicePerformed';
 import Filters from '../screens/Filters';
 import NewService from '../screens/NewService';
@@ -52,6 +53,8 @@ function PublicRouter() {
         component={Profile}
       />
       <Stack.Screen 
+        name="NewMember" 
+        component={NewMember}
         name="ServicePerformed" 
         component={ServicePerformed}
       />
