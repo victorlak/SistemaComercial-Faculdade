@@ -6,8 +6,10 @@ import Home from '../screens/Home';
 import Services from '../screens/Service';
 import Team from '../screens/Team';
 import Profile from '../screens/Profile';
+import NewMember from '../screens/NewMember';
 import ServicePerformed from '../screens/ServicePerformed';
 import Filters from '../screens/Filters';
+import NewService from '../screens/NewService';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,8 +17,12 @@ function PublicRouter() {
   return (
     <Stack.Navigator 
       screenOptions={{ headerShown: false }}
-      initialRouteName="Splash"
+      initialRouteName="NewService"
     >
+      <Stack.Screen 
+        name="NewService" 
+        component={NewService}
+      />
       <Stack.Screen 
         name="Splash" 
         component={SplashScreen}
@@ -47,6 +53,8 @@ function PublicRouter() {
         component={Profile}
       />
       <Stack.Screen 
+        name="NewMember" 
+        component={NewMember}
         name="ServicePerformed" 
         component={ServicePerformed}
       />
