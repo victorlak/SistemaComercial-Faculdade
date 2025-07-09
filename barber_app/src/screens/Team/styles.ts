@@ -1,10 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { styles as stylesButton } from '../../components/Button/styles';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
+    },
+    scrollViewContent: {
+        paddingBottom: 100,
     },
     title: {
         fontSize: 20,
@@ -29,6 +31,14 @@ const styles = StyleSheet.create({
         fontSize: 13,
         fontFamily: 'Poppins-SemiBold',
 
+    },
+    cardsContainer: {
+        marginTop: 10,
+        marginRight: 25,
+        marginLeft: 25,
+    },
+    cardUpdateStyle: {
+        marginBottom: 30,
     },
 
 });
