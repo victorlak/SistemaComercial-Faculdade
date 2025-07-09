@@ -1,6 +1,9 @@
 import React from 'react';
 import { useFonts } from 'expo-font';
 import {AppRouter} from './src/routes';
+
+import  ProfileT  from "./src/screens/Profile"
+
 export default function App() {
 
   const [fontsLoaded, fontError] = useFonts({
@@ -15,6 +18,7 @@ export default function App() {
   }
 
   return (
-          <AppRouter />
+          //<AppRouter />
+          <ProfileT/>
   );
 }
