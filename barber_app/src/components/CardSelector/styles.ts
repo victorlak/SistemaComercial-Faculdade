@@ -1,12 +1,12 @@
-
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
+
   wrapper: {
     width: '100%',
     position: 'relative',
-    zIndex: 999,
   },
+
   periodSelector: {
     marginBottom: 2,
   },

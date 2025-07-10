@@ -5,6 +5,16 @@ import { styles } from './styles';
 import CardContainer from '../CardContainer';
 import ArrowDownIcon from '../../assets/icons/ic_setaParaBaixo.svg';
 
+const zIndexManager = (() => {
+  let zCounter = 1;
+  return {
+    getNext: () => {
+      zCounter += 1;
+      return zCounter;
+    }
+  };
+})();
+
 type Props = {
   selectorLabel: string;
   options: string[];
@@ -28,11 +38,19 @@ export const CardSelector = ({
 }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [currentSelection, setCurrentSelection] = useState(initialSelectedOption);
+  const [dynamicZIndex, setDynamicZIndex] = useState(1);
 
   const handleSelectOption = (option: string) => {
     setCurrentSelection(option);
     setIsExpanded(false);
     onSelect(option);
+  };
+
+  const handleToggleExpand = () => {
+    if (!isExpanded) {
+      setDynamicZIndex(zIndexManager.getNext());
+    }
+    setIsExpanded(!isExpanded);
   };
 
   const renderDropdown = () => (
@@ -53,10 +71,10 @@ export const CardSelector = ({
   );
 
   return (
-    <View style={styles.wrapper}>
+    <View style={[styles.wrapper, { zIndex: dynamicZIndex }]}>
       <CardContainer>
         <TouchableOpacity 
-          onPress={() => setIsExpanded(!isExpanded)} 
+          onPress={handleToggleExpand} 
           style={styles.periodSelector}
         >
           <View style={styles.periodSelectorInner}>
@@ -76,7 +94,8 @@ export const CardSelector = ({
           <View style={{ 
             flexDirection: 'row', 
             justifyContent: 'space-between', 
-            alignItems: 'center' 
+            alignItems: 'center',
+            width: '100%'
           }}>
             <Text style={styles.commissionLabel}>{valueLabel}</Text>
             <Icon width={24} height={24} fill={iconColor} />
