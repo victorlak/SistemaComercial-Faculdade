@@ -2,6 +2,28 @@ import { getDocs, collection, query, where } from "firebase/firestore";
 import { db } from "../../services/firebaseConfig";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
+async function buscarIdPorCampoUnico(
+  email: string
+): Promise<string | null> {
+  try {
+    const ref = collection(db, 'Barbeiro');
+    const q = query(ref, where('email', "==", email));
+    const snapshot = await getDocs(q);
+
+    if (!snapshot.empty) {
+      const doc = snapshot.docs[0]; // só deve haver 1 resultado
+      return doc.id;
+    } else {
+      return null; // não encontrou
+    }
+  } catch (error) {
+    console.error("Erro ao buscar ID:", error);
+    return null;
+  }
+}
+
+
 async function verificaPerfilUsuario(email: String){
       const usuariosRef = collection(db, "Barbeiro");
   const q = query(usuariosRef, where("email", "==", email));
@@ -17,26 +39,27 @@ async function verificaPerfilUsuario(email: String){
   }
 }
 
-const salvarTipoUsuario = async (tipo: string) => {
+const salvarLocalStorage = async (conteudo: string | null, key: string) => {
   try {
-    await AsyncStorage.setItem('tipoUsuario', tipo);
+    await AsyncStorage.setItem(key, conteudo);
   } catch (error) {
     console.error('Erro ao salvar tipo de usuário:', error);
   }
 };
 
-const obterTipoUsuario = async () => {
+const buscarLocalStorage = async (key: string | null) => {
   try {
-    const tipo = await AsyncStorage.getItem('tipoUsuario');
-    return tipo;
+    const conteudo = await AsyncStorage.getItem(key);
+    return conteudo;
   } catch (error) {
     console.error('Erro ao obter tipo de usuário:', error);
-    return null;
+    return '';
   }
 };
 
 export {
-    salvarTipoUsuario,
-    obterTipoUsuario,
-    verificaPerfilUsuario
+    salvarLocalStorage,
+    buscarLocalStorage,
+    verificaPerfilUsuario,
+    buscarIdPorCampoUnico
 }

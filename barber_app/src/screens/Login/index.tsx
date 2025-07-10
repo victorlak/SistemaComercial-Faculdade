@@ -7,7 +7,8 @@ import { auth, db, login, register } from "../../services/firebaseConfig";
 import React from "react"
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth"
 import { useNavigation } from "@react-navigation/native"
-import { salvarTipoUsuario, obterTipoUsuario, verificaPerfilUsuario } from './Storage';
+import { salvarLocalStorage, buscarLocalStorage, verificaPerfilUsuario } from './Storage';
+import { buscarIdPorCampoUnico } from "./Storage"
 
 
 export default function Index() {
@@ -26,9 +27,11 @@ export default function Index() {
     try {
       await signInWithEmailAndPassword(auth, email, senha);
       let perfil = await verificaPerfilUsuario(email)
-      await salvarTipoUsuario(perfil)
-      let tipo = await obterTipoUsuario()
-
+      await salvarLocalStorage(perfil, 'perfil')
+      console.log(perfil);
+      let id_logado: string | null = await buscarIdPorCampoUnico(email)
+      
+      await salvarLocalStorage(id_logado,'id_logado')
       navigation.navigate('Painel');
     } catch (err: any) {
       switch (err.code) {
