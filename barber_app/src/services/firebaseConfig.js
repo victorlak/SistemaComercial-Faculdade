@@ -26,6 +26,7 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { getAnalytics } from "firebase/analytics";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { getStorage } from 'firebase/storage';
 
 // Sua configuração do Firebase
 const firebaseConfig = {
@@ -42,6 +43,7 @@ const firebaseConfig = {
   export const db = getFirestore(app);
   export const auth = getAuth(app);
   export const analytics = getAnalytics(app);
+  export const storage = getStorage(app);
 
 export const login = (email, password) => 
   signInWithEmailAndPassword(auth, email, password);

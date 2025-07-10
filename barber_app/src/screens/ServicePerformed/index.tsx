@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { SafeAreaView, View, Text, FlatList, TouchableOpacity, StatusBar, Platform } from 'react-native';
 import { styles } from './styles';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 
+// Supondo que seus componentes e assets estão nos caminhos corretos
 import SetaEsquerda from '../../assets/icons/ic_setaEsquerda.svg';
 import SearchBar from '../../components/Search';
 import { CardInfo } from '../../components/CardInfo';
@@ -48,18 +49,32 @@ const CATEGORIES_DATA: Category[] = [
 ];
 
 const ALL_SERVICES_DB: ServiceData[] = [
-    { id: '1', nome: 'Coloração', cliente: 'Carlos Oliveira', data: '02/05/2025 17:15', preco: 70.00 },
-    { id: '2', nome: 'Corte', cliente: 'Pedro Santos', data: '02/05/2025 13:00', preco: 35.00 },
-    { id: '3', nome: 'Corte + Barba', cliente: 'João Silva', data: '02/05/2025 10:30', preco: 55.00 },
-    { id: '4', nome: 'Barba', cliente: 'Carlos Oliveira', data: '01/05/2025 16:00', preco: 25.00 },
-    { id: '5', nome: 'Hidratação', cliente: 'Pedro Santos', data: '01/05/2025 15:30', preco: 45.00 },
-    { id: '6', nome: 'Corte', cliente: 'Carlos Oliveira', data: '01/05/2025 16:00', preco: 35.00 },
-    { id: '7', nome: 'Corte', cliente: 'João Silva', data: '01/05/2025 15:30', preco: 35.00 },
+  { id: '1', nome: 'Coloração', cliente: 'Carlos Oliveira', data: '02/05/2025 17:15', preco: 70.00 },
+  { id: '2', nome: 'Corte', cliente: 'Pedro Santos', data: '02/05/2025 13:00', preco: 35.00 },
+  { id: '3', nome: 'Corte + Barba', cliente: 'João Silva', data: '02/05/2025 10:30', preco: 55.00 },
+  { id: '4', nome: 'Barba', cliente: 'Carlos Oliveira', data: '01/05/2025 16:00', preco: 25.00 },
+  { id: '5', nome: 'Hidratação', cliente: 'Pedro Santos', data: '01/05/2025 15:30', preco: 45.00 },
+  { id: '6', nome: 'Corte', cliente: 'Carlos Oliveira', data: '01/05/2025 16:00', preco: 35.00 },
+  { id: '7', nome: 'Corte', cliente: 'João Silva', data: '01/05/2025 15:30', preco: 35.00 },
+  { id: '8', nome: 'Barba', cliente: 'Lucas Martins', data: '30/04/2025 11:00', preco: 25.00 },
+  { id: '9', nome: 'Corte + Barba', cliente: 'Ricardo Alves', data: '30/04/2025 14:00', preco: 60.00 },
+  { id: '10', nome: 'Hidratação', cliente: 'João Silva', data: '29/04/2025 18:00', preco: 45.00 },
+  { id: '11', nome: 'Coloração', cliente: 'Pedro Santos', data: '29/04/2025 16:30', preco: 75.00 },
+  { id: '12', nome: 'Corte', cliente: 'Fernanda Lima', data: '28/04/2025 19:00', preco: 40.00 },
+  { id: '13', nome: 'Barba', cliente: 'Carlos Oliveira', data: '28/04/2025 17:00', preco: 25.00 },
+  { id: '14', nome: 'Corte', cliente: 'Lucas Martins', data: '27/04/2025 10:00', preco: 35.00 },
+  { id: '15', nome: 'Hidratação', cliente: 'Ricardo Alves', data: '27/04/2025 09:30', preco: 50.00 },
+  { id: '16', nome: 'Corte + Barba', cliente: 'João Silva', data: '26/04/2025 15:00', preco: 55.00 },
+  { id: '17', nome: 'Corte', cliente: 'Carlos Oliveira', data: '25/04/2025 12:00', preco: 35.00 },
+  { id: '18', nome: 'Barba', cliente: 'Pedro Santos', data: '25/04/2025 11:30', preco: 30.00 },
+  { id: '19', nome: 'Coloração', cliente: 'Fernanda Lima', data: '24/04/2025 14:00', preco: 80.00 },
+  { id: '20', nome: 'Corte', cliente: 'Ricardo Alves', data: '24/04/2025 10:00', preco: 35.00 },
 ];
 
 export default function ServicePerformed() {
   const navigation = useNavigation();
   const route = useRoute<ServicePerformedRouteProp>();
+  // ... (lógica dos hooks e useEffect permanece a mesma)
   const receivedFilters = route.params?.filters;
 
   const areFiltersActive = !!receivedFilters;
@@ -69,7 +84,7 @@ export default function ServicePerformed() {
   const [filteredServices, setFilteredServices] = useState<ServiceData[]>(ALL_SERVICES_DB);
 
   useEffect(() => {
-    let services = ALL_SERVICES_DB;
+    let services = [...ALL_SERVICES_DB];
 
     if (receivedFilters) {
         if (receivedFilters.services.length > 0) {
@@ -126,7 +141,7 @@ export default function ServicePerformed() {
     setFilteredServices(services);
   }, [searchQuery, selectedCategory, receivedFilters]);
 
-  const handleGoBack = () => navigation.goBack();
+  const handleGoBack = () => navigation.navigate('Home');
   const handleFilter = () => navigation.navigate('Filters');
 
   const handleSelectCategory = (categoryId: string) => {
@@ -139,42 +154,46 @@ export default function ServicePerformed() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-            <SetaEsquerda width={24} height={24} color="#1C1C1E" />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Serviços Realizados</Text>
-        </View>
-        
-        <FlatList
-            ListHeaderComponent={
-                <>
-                    <SearchBar 
-                        searchQuery={searchQuery}
-                        setSearchQuery={setSearchQuery}
-                        onFilterPress={handleFilter}
-                        isFilterActive={areFiltersActive}
-                    />
-                    <CardInfo
-                        label="Total de Seriços Realizados"
-                        value={ALL_SERVICES_DB.length.toString()}
-                        icon={TesouraIcon}
-                    />
-                    <CategoryFilter
-                        categories={CATEGORIES_DATA}
-                        selectedCategoryId={selectedCategory}
-                        onSelectCategory={handleSelectCategory}
-                    />
-                </>
-            }
-            data={filteredServices}
-            keyExtractor={item => item.id}
-            renderItem={({ item }) => <ServiceItemCard data={item} />}
-            contentContainerStyle={styles.scrollViewContent}
-            showsVerticalScrollIndicator={false}
-        />
-      </View>
+      <FlatList
+        ListHeaderComponent={
+          <>
+            <View style={styles.header}>
+              <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
+                <SetaEsquerda width={24} height={24} color="#1C1C1E" />
+              </TouchableOpacity>
+              <Text style={styles.headerTitle}>Serviços Realizados</Text>
+            </View>
+            <View style={styles.contentPadding}>
+                <SearchBar 
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
+                    onFilterPress={handleFilter}
+                    isFilterActive={areFiltersActive}
+                />
+                <CardInfo
+                    label="Total de Seriços Realizados"
+                    value={ALL_SERVICES_DB.length.toString()}
+                    icon={TesouraIcon}
+                />
+                <CategoryFilter
+                    categories={CATEGORIES_DATA}
+                    selectedCategoryId={selectedCategory}
+                    onSelectCategory={handleSelectCategory}
+                />
+            </View>
+          </>
+        }
+        data={filteredServices}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => (
+            <View style={styles.contentPadding}>
+                <ServiceItemCard data={item} />
+            </View>
+        )}
+        showsVerticalScrollIndicator={false}
+        ListFooterComponent={<View style={{ height: 90 }} />}
+      />
+      
       <NavBar />
     </SafeAreaView>
   );

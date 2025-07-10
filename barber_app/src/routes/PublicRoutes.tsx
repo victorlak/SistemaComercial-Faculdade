@@ -9,6 +9,7 @@ import Profile from '../screens/Profile';
 import NewMember from '../screens/NewMember';
 import ServicePerformed from '../screens/ServicePerformed';
 import Filters from '../screens/Filters';
+import NewService from '../screens/NewService';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,10 @@ function PublicRouter() {
       screenOptions={{ headerShown: false }}
       initialRouteName="Splash"
     >
+      <Stack.Screen 
+        name="NewService" 
+        component={NewService}
+      />
       <Stack.Screen 
         name="Splash" 
         component={SplashScreen}
