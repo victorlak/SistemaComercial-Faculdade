@@ -71,7 +71,7 @@ export default function NewService() {
         autoCapitalize="none" />
       </View>
       <View style={styles.field}>
-        <Text style={styles.label}>Comissão</Text>
+        <Text style={styles.label}>Comissão</Text> 
          <Input 
         onChangeText={setComissao}
         value = {comissao}
@@ -82,6 +82,7 @@ export default function NewService() {
     </View>
   );
 }
+//jhbouyiutv
 
 const styles = StyleSheet.create({
   addMemberButton: {
