@@ -183,7 +183,7 @@ export default function ServicePerformed() {
         setFilteredServices(servicesToFilter);
     }, [searchQuery, selectedCategory, receivedFilters, servicosEnriquecidos]);
 
-    const handleGoBack = () => navigation.goBack();
+    const handleGoBack = () => navigation.navigate('Home');
     const handleFilter = () => navigation.navigate('Filters');
     const handleSelectCategory = (categoryId: string) => {
         setSelectedCategory(prev => (prev === categoryId ? null : categoryId));

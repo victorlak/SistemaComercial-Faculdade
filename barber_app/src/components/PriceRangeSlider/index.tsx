@@ -1,6 +1,5 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { View, Text, PanResponder } from 'react-native';
-
 import { styles } from './styles';
 
 type Props = {
@@ -11,48 +10,57 @@ type Props = {
 };
 
 export default function PriceRangeSlider({ range, totalMin, totalMax, onRangeChange }: Props) {
+  const trackRef = useRef<View>(null);
   const sliderLayoutRef = useRef({ x: 0, width: 0 });
+
+  const latestProps = useRef({ range, totalMin, totalMax, onRangeChange });
+  useEffect(() => {
+    latestProps.current = { range, totalMin, totalMax, onRangeChange };
+  });
 
   const getPercentage = (value: number) => {
     if (totalMax === totalMin) return 0;
-    return ((value - totalMin) / (totalMax - totalMin)) * 100;
+    const clampedValue = Math.max(totalMin, Math.min(value, totalMax));
+    return ((clampedValue - totalMin) / (totalMax - totalMin)) * 100;
   };
 
   const getValueFromPosition = (position: number) => {
-    const percentage = (position / sliderLayoutRef.current.width) * 100;
-    const value = totalMin + ((totalMax - totalMin) * percentage) / 100;
-    return Math.max(totalMin, Math.min(totalMax, value));
+    const { totalMin: currentTotalMin, totalMax: currentTotalMax } = latestProps.current;
+    if (sliderLayoutRef.current.width === 0) {
+      return currentTotalMin;
+    }
+    const clampedPosition = Math.max(0, Math.min(position, sliderLayoutRef.current.width));
+    const percentage = (clampedPosition / sliderLayoutRef.current.width) * 100;
+    const value = currentTotalMin + ((currentTotalMax - currentTotalMin) * percentage) / 100;
+    return value;
   };
 
-  const minPanResponder = useRef(
+  const createPanResponder = (isMinHandle: boolean) =>
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onPanResponderMove: (evt, gestureState) => {
-        const newX = gestureState.moveX - sliderLayoutRef.current.x;
-        const newValue = getValueFromPosition(newX);
-        if (newValue <= range.max) {
-          onRangeChange({ ...range, min: newValue });
-        }
-      },
-    })
-  ).current;
+        const { range: currentRange, onRangeChange: currentOnRangeChange } = latestProps.current;
+        const relativeX = gestureState.moveX - sliderLayoutRef.current.x;
+        const newValue = getValueFromPosition(relativeX);
 
-  const maxPanResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onPanResponderMove: (evt, gestureState) => {
-        const newX = gestureState.moveX - sliderLayoutRef.current.x;
-        const newValue = getValueFromPosition(newX);
-        if (newValue >= range.min) {
-          onRangeChange({ ...range, max: newValue });
+        if (isMinHandle) {
+          if (newValue <= currentRange.max) {
+            currentOnRangeChange({ ...currentRange, min: newValue });
+          }
+        } else {
+          if (newValue >= currentRange.min) {
+            currentOnRangeChange({ ...currentRange, max: newValue });
+          }
         }
       },
-    })
-  ).current;
+    });
+
+  const minPanResponder = useRef(createPanResponder(true)).current;
+  const maxPanResponder = useRef(createPanResponder(false)).current;
 
   const minPositionPercent = getPercentage(range.min);
   const maxPositionPercent = getPercentage(range.max);
-  const activeTrackWidth = maxPositionPercent - minPositionPercent;
+  const activeTrackWidth = Math.max(0, maxPositionPercent - minPositionPercent);
 
   return (
     <View>
@@ -61,10 +69,12 @@ export default function PriceRangeSlider({ range, totalMin, totalMax, onRangeCha
       </Text>
       <View style={styles.sliderContainer}>
         <View
+          ref={trackRef}
           style={styles.fullTrack}
-          onLayout={(event) => {
-            const { x, width } = event.nativeEvent.layout;
-            sliderLayoutRef.current = { x, width };
+          onLayout={() => {
+            trackRef.current?.measure((x, y, width, height, pageX, pageY) => {
+              sliderLayoutRef.current = { x: pageX, width };
+            });
           }}
         />
         <View
