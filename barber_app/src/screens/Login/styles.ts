@@ -18,6 +18,10 @@ const styles = StyleSheet.create({
     width: 332,
     height: 41,
   },
+  buttonEntrar: {
+    width: 332,
+    height: 41,
+  },
   inputContainer: {
     width: '80%',
     marginTop: 20

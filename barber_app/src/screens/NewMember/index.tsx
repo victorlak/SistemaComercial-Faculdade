@@ -15,6 +15,7 @@ import {db} from '../../services/firebaseConfig';
 import { collection, addDoc } from "firebase/firestore";
 import { Barbeiro } from '../../types/user';
 import { Servico } from '../../types/services';
+import { register } from '../../services/firebaseConfig';
 
 export default function NewMember() {
   const [name, setName] = useState('');
@@ -25,6 +26,7 @@ export default function NewMember() {
   const [dataSaida, setDataSaida] = useState('');
   const [servicosDisponiveis, setServicosDisponiveis] = useState<Servico[]>([]);
   const [servicosSelecionados, setServicosSelecionados] = useState<string[]>([]);
+  const SENHA_DEFAULT = 123456;
 
   async function buscarServicos(): Promise<Servico[]> {
     const servicosCol = collection(db, "Servicos");
@@ -75,7 +77,14 @@ export default function NewMember() {
   };
 
   async function addMember(Barbeiro: Barbeiro){
-    await addDoc(collection(db, "Barbeiro"), Barbeiro);
+    try{
+      register(email,SENHA_DEFAULT)
+      await addDoc(collection(db, "Barbeiro"), Barbeiro);
+    }catch(err){
+      console.log(err);
+      
+    }
+    
   }
   
   const  handleAdicionarMembro = async () => {
@@ -85,7 +94,8 @@ export default function NewMember() {
       telefone:phone,
       dataIngresso: dataIngresso,
       dataSaida: dataSaida,
-      especialidades: servicosSelecionados
+      especialidades: servicosSelecionados,
+      servicosRealizados: []
     }
     if (!name.trim()){
       Alert.alert('Erro', 'O campo Nome é obrigatório.');
@@ -112,10 +122,10 @@ export default function NewMember() {
       return;
     }
 
-    if (!dataIngresso){
-      Alert.alert('Erro', 'A data de Ingresso é obrigatória.');
-      return;
-    }
+    //if (!dataIngresso){
+      //Alert.alert('Erro', 'A data de Ingresso é obrigatória.');
+      //return;
+    //}
 
     if (servicosSelecionados.length === 0){
       Alert.alert('Erro', 'Por favor, selecione pelo menos uma especialidade.');
@@ -136,6 +146,7 @@ export default function NewMember() {
   const navigation = useNavigation<any>();
 
   const handleReturnToTeam = () => {
+
     navigation.navigate('Equipe' as never);
   };
 
