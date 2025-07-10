@@ -1,8 +1,7 @@
-import ServicoPerfomed from './servicesPerfomed';
+import {ServicoPerfomed} from './servicesPerfomed';
 
 type Barbeiro ={
-    id: string;
-    profileImage : string;
+    id?: string;
     nome: string;
     email: string;
     telefone: string;

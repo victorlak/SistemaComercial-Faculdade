@@ -1,4 +1,4 @@
-import Servico from './services'
+import {Servico} from './services'
 
 type ServicoPerfomed ={
     servico: Servico,
