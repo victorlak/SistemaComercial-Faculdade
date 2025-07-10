@@ -10,6 +10,7 @@ import Button from '../Button';
 import { PerfisUsuario } from '../../types/utils/ProfilesUserTypes'
 import { useState } from 'react';
 import { Input } from '../Input';
+import { obterTipoUsuario } from '../../screens/Login/Storage';
 
 type Servico = {
     nome: string;
@@ -21,11 +22,17 @@ type Servico = {
 
 type Props = {
     servico: Servico;
-    perfis: PerfisUsuario[];
 };
 
-const ServiceAvailable = ({ servico, perfis }: Props) => {
+const ServiceAvailable = ({servico}: Props) => {
     const [adicionando, setAdicionando] = useState(false)
+    const [perfil, setPerfil] = useState()
+    async function obterUser(){
+        let perfil = await obterTipoUsuario()
+        setPerfil(perfil)
+    }
+    obterUser()
+    
     return (
 
         <CardContainer>
@@ -60,7 +67,7 @@ const ServiceAvailable = ({ servico, perfis }: Props) => {
                     <Input />
                 </View> : null
             }
-            {perfis.includes(PerfisUsuario.ADM) ?
+            {perfil === 'ADM' ?
                 <View style={[styles.row, styles.styleButton]}>
 
                     <Button  style={styles.editButton} textStyle={styles.textEditButton} icone={<IconEdit fill='blue' />} label='Editar'></Button>
