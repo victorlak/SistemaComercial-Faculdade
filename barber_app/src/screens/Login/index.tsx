@@ -7,6 +7,8 @@ import { auth, db, login, register } from "../../services/firebaseConfig";
 import React from "react"
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth"
 import { useNavigation } from "@react-navigation/native"
+import { salvarTipoUsuario, obterTipoUsuario, verificaPerfilUsuario } from './Storage';
+
 
 export default function Index() {
   const [email, setEmail] = useState('');
@@ -23,6 +25,10 @@ export default function Index() {
     
     try {
       await signInWithEmailAndPassword(auth, email, senha);
+      let perfil = await verificaPerfilUsuario(email)
+      await salvarTipoUsuario(perfil)
+      let tipo = await obterTipoUsuario()
+
       navigation.navigate('Painel');
     } catch (err: any) {
       switch (err.code) {
