@@ -55,13 +55,14 @@ function PublicRouter() {
       <Stack.Screen 
         name="NewMember" 
         component={NewMember}
+        
       />
       <Stack.Screen 
         name="Filters" 
         component={Filters}
       />
-      <Stack.Screen
-        name="ServicePerformed"
+      <Stack.Screen 
+        name="ServicePerformed" 
         component={ServicePerformed}
       />
     </Stack.Navigator>

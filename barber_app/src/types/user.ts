@@ -1,3 +1,5 @@
+import ServicoPerfomed from './servicesPerfomed';
+
 type Barbeiro ={
     id: string;
     profileImage : string;
@@ -7,6 +9,8 @@ type Barbeiro ={
     dataIngresso: string;
     dataSaida: string;
     especialidades: string[];
+    servicosRealizados: ServicoPerfomed[];
+    
 }
 
 export {Barbeiro};

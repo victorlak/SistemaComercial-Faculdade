@@ -1,8 +1,8 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
-import Button from "../../components/Button"
-import Input from "../../components/Input"
-import styles from './styles'
-import { useState } from "react"
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import Button from "../../components/Button";
+import  Input  from "../../components/Input";
+import styles from "./styles";
+import { useState } from "react";
 import { auth, db, login, register } from "../../services/firebaseConfig";
 import React from "react"
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth"
