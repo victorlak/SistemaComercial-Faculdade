@@ -19,6 +19,7 @@ import { useEffect } from 'react';
 */
 
 type Servico = {
+  id: string;
   nome: string;
   preco: string;
   comissao: string;
@@ -41,7 +42,8 @@ type Servico = {
 
 export default function Service() {
    
-  const [servicosDisponiveis, setServicosDisponiveis] = useState([]);
+  const [servicosDisponiveis, setServicosDisponiveis] = useState<Servico[]>();
+
   async function buscarServicos(): Promise<Servico[]> {
     const servicosCol = collection(db, "Servicos");
     const servicosSnapshot = await getDocs(servicosCol);
@@ -69,8 +71,8 @@ export default function Service() {
       
       <ScrollView contentContainerStyle={styles.scroll}>
         
-        {servicosDisponiveis.map((item, index) => (
-          <ServiceAvailable key={index} servico={item} perfis= {[PerfisUsuario.ADM]} />
+        {servicosDisponiveis?.map((item, index) => (
+          <ServiceAvailable key={item.id} servico={item} />
         ))}
       </ScrollView>
       <NavBar />

@@ -30,8 +30,8 @@ export default function Index() {
       await salvarLocalStorage(perfil, 'perfil')
       console.log(perfil);
       let id_logado: string | null = await buscarIdPorCampoUnico(email)
-      
       await salvarLocalStorage(id_logado,'id_logado')
+      
       navigation.navigate('Painel');
     } catch (err: any) {
       switch (err.code) {
