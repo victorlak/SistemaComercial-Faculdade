@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, Text, Image } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import styles from './styles';
@@ -7,24 +7,14 @@ import HomeIcon from '../../assets/icons/ic_home.svg';
 import PerfilIcon from '../../assets/icons/ic_perfil.svg';
 import EquipeIcon from '../../assets/icons/ic_equipe.svg';
 import ServicosIcon from '../../assets/images/img_servicos.png';
+import { buscarLocalStorage } from '../../screens/Login/Storage';
 
-interface NavItemProps {
-  label: string;
-  icon?: any;
-  isActive?: boolean;
-  onPress?: () => void;
-}
-
-interface BottomNavBarProps {
-  tipoUser?: number;
-}
-
-const NavItem: React.FC<NavItemProps> = ({ 
+const NavItem = ({ 
   label, 
   icon,
   isActive = false, 
   onPress 
-}) => (
+}: any) => (
   <TouchableOpacity 
     style={[styles.navItem, isActive && styles.active]}
     onPress={onPress}
@@ -40,16 +30,18 @@ const NavItem: React.FC<NavItemProps> = ({
   </TouchableOpacity>
 );
 
-export const NavBar: React.FC<BottomNavBarProps> = ({ tipoUser = 1 }) => {
+export const NavBar: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  const [perfil, setPerfil] = useState<string | null>(null);
 
-  const routeToLabel: { [key: string]: string } = {
-    Painel: 'Painel',
-    Servicos: 'Serviços',
-    Equipe: 'Equipe',
-    Perfil: 'Perfil'
-  };
+  useEffect(() => {
+    async function obterPerfil() {
+      const perfilSalvo = await buscarLocalStorage('perfil');
+      setPerfil(perfilSalvo);
+    }
+    obterPerfil();
+  }, []);
 
   const items = [
     { 
@@ -64,7 +56,7 @@ export const NavBar: React.FC<BottomNavBarProps> = ({ tipoUser = 1 }) => {
       routeName: 'Servicos', 
       onPress: () => navigation.navigate('Servicos') 
     },
-    ...(tipoUser !== 2 ? [{
+    ...(perfil === 'ADM' ? [{
       label: 'Equipe',
       icon: EquipeIcon,
       routeName: 'Equipe',
@@ -92,3 +84,5 @@ export const NavBar: React.FC<BottomNavBarProps> = ({ tipoUser = 1 }) => {
     </View>
   );
 };
+
+export default NavBar;
