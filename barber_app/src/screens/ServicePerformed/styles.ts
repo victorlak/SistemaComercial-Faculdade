@@ -5,15 +5,11 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 28,
+    paddingHorizontal: 28, 
     backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
     borderBottomColor: '#EAEAEA',
@@ -32,9 +28,8 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     color: '#1C1C1E',
   },
-  scrollViewContent: {
+  contentPadding: {
     paddingHorizontal: 28,
-    paddingTop: 24,
-    paddingBottom: 40,
+    paddingTop: 24, 
   },
 });
