@@ -1,3 +1,4 @@
+
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -11,22 +12,19 @@ export const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 100,
   },
-
   logo: {
     width: 60,
     height: 60,
     resizeMode: 'contain',
     marginTop: 10,
   },
-
   headerTitle: {
-    fontFamily: 'Poppins-Regular', 
+    fontFamily: 'Poppins-Regular',
     fontSize: 20,
     textAlign: 'center',
     marginVertical: 15,
     color: '#1C1C1E',
   },
-  
   tituloSecao: {
     fontFamily: 'Poppins-Bold',
     fontSize: 18,
@@ -44,4 +42,15 @@ export const styles = StyleSheet.create({
     width: '100%',
     paddingVertical: 16,
   },
+  servicesGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginTop: 16,
+  },
+  serviceItem: {
+    width: '48%',
+    marginBottom: 16,
+  }
 });

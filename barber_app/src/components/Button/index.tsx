@@ -1,6 +1,7 @@
 import React from "react";
 import { TextStyle, ViewStyle, TouchableOpacity, Text, TouchableOpacityProps, View } from "react-native";
 import { styles } from './styles';
+import { SvgProps } from 'react-native-svg';
 
 type Props = TouchableOpacityProps & {
     label: string;
@@ -17,4 +18,5 @@ export default function Button({ label, style, textStyle, icone, ...rest }: Prop
       </View>
     </TouchableOpacity>
   );
-}
+};
+

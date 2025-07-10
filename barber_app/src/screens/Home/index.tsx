@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, SafeAreaView, Text, TouchableOpacity, Image, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
 import { CardInfo } from '../../components/CardInfo';
 import { CardSelector } from '../../components/CardSelector';
 import { NavBar } from '../../components/NavBar';
 import ServiceItemCard from '../../components/ServiceItemCard';
 import { styles } from './styles';
 import DinheiroIcon from '../../assets/icons/ic_dinheiro.svg';
-import FuncionarioIcon from '../../assets/icons/ic_equipe.svg'; 
-import TesouraIcon from '../../assets/icons/ic_Relogio.svg'; 
+import FuncionarioIcon from '../../assets/icons/ic_equipe.svg';
+import TesouraIcon from '../../assets/icons/ic_Relogio.svg';
 
 const PERIOD_OPTIONS = ['Este mês', 'Mês passado', 'Últimos 7 dias', 'Hoje'];
 const EMPLOYEE_OPTIONS = ['Todos', 'Carlos Oliveira', 'Mariana Silva'];
@@ -43,22 +42,20 @@ const getTotalPorServico = (servico: string): string => {
   if (servico === 'Corte') return 'R$ 1.200,00';
   if (servico === 'Coloração') return 'R$ 2.150,00';
   return 'R$ 500,00';
-}
-
+};
 
 export default function Home() {
   const navigation = useNavigation();
   const [selectedPeriod, setSelectedPeriod] = useState(PERIOD_OPTIONS[0]);
   const [commissionByPeriod, setCommissionByPeriod] = useState('');
-
   const [selectedEmployee, setSelectedEmployee] = useState(EMPLOYEE_OPTIONS[0]);
   const [commissionByEmployee, setCommissionByEmployee] = useState('');
-
   const [selectedService, setSelectedService] = useState(SERVICE_TYPE_OPTIONS[0]);
   const [totalByService, setTotalByService] = useState('');
   const [employeeCount, setEmployeeCount] = useState('0');
   const [serviceTypeCount, setServiceTypeCount] = useState('0');
   const [recentServices, setRecentServices] = useState(DADOS_SERVICOS_DB);
+
   useEffect(() => {
     setEmployeeCount(EMPLOYEE_OPTIONS.length.toString());
     setServiceTypeCount(SERVICE_TYPE_OPTIONS.length.toString());
@@ -79,7 +76,6 @@ export default function Home() {
     setTotalByService(newValue);
   }, [selectedService]);
 
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.container}>
@@ -87,9 +83,7 @@ export default function Home() {
           source={require('../../assets/images/img_logo.png')}
           style={styles.logo}
         />
-
         <Text style={styles.headerTitle}>Barbearia</Text>
-
         <View style={{ width: '100%', gap: 16 }}>
           <CardSelector
             selectorLabel="Período"
@@ -134,11 +128,14 @@ export default function Home() {
             iconColor='#e74c3c'
           />
         </View>
-
+        
         <Text style={styles.tituloSecao}>Serviços Recentes</Text>
-        {recentServices.map((servico) => (
-          <ServiceItemCard key={servico.id} data={servico} />
-        ))}
+        <View style={styles.servicesGrid}>
+          {recentServices.map((servico) => (
+            <ServiceItemCard key={servico.id} data={servico} />
+          ))}
+        </View>
+        
         <TouchableOpacity onPress={() => navigation.navigate('ServicePerformed')}>
           <Text style={styles.verTodos}>Ver todos →</Text>
         </TouchableOpacity>

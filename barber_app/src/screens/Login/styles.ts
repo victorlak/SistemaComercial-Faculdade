@@ -11,8 +11,16 @@ const styles = StyleSheet.create({
     marginTop: 171,
     fontFamily: "Poppins-Regular",
   },
-  button: {
-    marginTop: '10%'
+  buttonContainer: {
+    marginTop: '10%',
+  },
+  buttonEntrar: {
+    width: 332,
+    height: 41,
+  },
+  buttonEntrar: {
+    width: 332,
+    height: 41,
   },
   inputContainer: {
     width: '80%',

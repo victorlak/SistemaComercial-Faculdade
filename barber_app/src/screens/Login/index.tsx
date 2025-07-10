@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
 import Button from "../../components/Button"
-import { Input } from "../../components/Input"
+import  Input from "../../components/Input"
 import styles from './styles'
 import { useState, useEffect } from "react"
 import { auth, db, login, register } from "../../services/firebaseConfig";
@@ -117,8 +117,8 @@ export default function Index() {
       </View>
 
       {/* Botão de Entrar */}
-      <View style={styles.button}>
-        <Button onPress={handleLogin} label="Entrar" />
+      <View style={styles.buttonContainer}>
+        <Button onPress={handleLogin} label="Entrar" style={styles.buttonEntrar}/>
       </View>
 
       {/* Link de recuperação de senha */}

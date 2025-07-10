@@ -5,6 +5,7 @@
 // import { getAuth } from "firebase/auth";
 // import { getAnalytics } from "firebase/analytics";
 
+
 // const firebaseConfig = {
 //   apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
 //   authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
@@ -24,7 +25,10 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { getAnalytics } from "firebase/analytics";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { getStorage } from 'firebase/storage';
 
+// Sua configuração do Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBpD4NNFcw1bbJi2rMGy2pMMMQdxgywMjQ",
   authDomain: "barbearia-oliveira-700b0.firebaseapp.com",
@@ -39,6 +43,7 @@ const firebaseConfig = {
   export const db = getFirestore(app);
   export const auth = getAuth(app);
   export const analytics = getAnalytics(app);
+  export const storage = getStorage(app);
 
 export const login = (email, password) => 
   signInWithEmailAndPassword(auth, email, password);
