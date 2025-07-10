@@ -1,4 +1,4 @@
-import ServicoPerfomed from './servicesPerfomed';
+
 
 type Barbeiro ={
     nome: string;
@@ -6,9 +6,7 @@ type Barbeiro ={
     telefone: string;
     dataIngresso: string;
     dataSaida: string;
-    especialidades: string[];
-    servicosRealizados: ServicoPerfomed[];
-    
+    especialidades: string[];   
 }
 
 export {Barbeiro};
