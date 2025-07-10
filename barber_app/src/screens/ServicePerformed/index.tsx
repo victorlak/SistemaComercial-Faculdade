@@ -100,7 +100,7 @@ export default function ServicePerformed() {
         const servicosRealizadosCol = collection(db, "ServicosRealizados");
         let q;
 
-        if (userProfile === 'barbeiro') {
+        if (userProfile === 'BARBEIRO') {
             q = query(servicosRealizadosCol, where("id_barbeiro", "==", userId));
         } else {
             q = query(servicosRealizadosCol);
