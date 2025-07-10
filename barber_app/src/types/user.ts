@@ -1,4 +1,6 @@
 type Barbeiro ={
+    id: string;
+    profileImage : string;
     nome: string;
     email: string;
     telefone: string;
