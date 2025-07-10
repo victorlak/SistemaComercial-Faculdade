@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, View, Text, FlatList, TouchableOpacity, ActivityIndicator, StyleSheet, Platform, StatusBar } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-
 import SetaEsquerda from '../../assets/icons/ic_setaEsquerda.svg';
 import SearchBar from '../../components/Search';
 import { CardInfo } from '../../components/CardInfo';
@@ -19,7 +18,7 @@ import ColoracaoIconBranco from '../../assets/images/img_coloracaoBranco.png';
 import BarbaIconBranco from '../../assets/images/img_barbaBranco.png';
 import CorteBarbaIconBranco from '../../assets/images/img_corteBarbaBranco.png';
 import HidratacaoIconBranco from '../../assets/images/img_hidratacaoBranco.png';
-
+import { styles } from './styles';
 import { db } from '../../services/firebaseConfig';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { buscarLocalStorage } from '../Login/Storage';
@@ -131,6 +130,14 @@ export default function ServicePerformed() {
                     const nomeBarbeiro = barbeirosMap.get(sr.id_barbeiro) || 'Não encontrado';
                     const servicoInfo = servicosMap.get(sr.id_servico);
                     return { ...sr, nomeBarbeiro, nomeServico: servicoInfo?.nome || 'Não encontrado', precoServico: servicoInfo?.preco || 0, };
+                }).sort((a, b) => {
+                    const [diaA, mesA, anoA] = a.data.split('/');
+                    const dataA = new Date(`${anoA}-${mesA}-${diaA}T${a.hora}`);
+
+                    const [diaB, mesB, anoB] = b.data.split('/');
+                    const dataB = new Date(`${anoB}-${mesB}-${diaB}T${b.hora}`);
+
+                    return dataB.getTime() - dataA.getTime();
                 });
                 
                 setServicosEnriquecidos(dadosCombinados);
@@ -231,43 +238,3 @@ export default function ServicePerformed() {
         </SafeAreaView>
     );
 }
-
-export const styles = StyleSheet.create({
-    safeArea: {
-        flex: 1,
-        backgroundColor: '#FFFFFF',
-    },
-    header: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: 28, 
-        backgroundColor: '#FFFFFF',
-        borderBottomWidth: 1,
-        borderBottomColor: '#EAEAEA',
-        position: 'relative',
-        paddingTop: Platform.OS === 'android' ? (StatusBar.currentHeight || 0) + 15 : 15,
-        paddingBottom: 15,
-    },
-    backButton: {
-        position: 'absolute',
-        top: Platform.OS === 'android' ? (StatusBar.currentHeight || 0) + 15 : 15,
-        left: 28,
-        padding: 5,
-    },
-    headerTitle: {
-        fontFamily: 'Poppins-Bold',
-        fontSize: 20,
-        color: '#1C1C1E',
-    },
-    contentPadding: {
-        paddingHorizontal: 28,
-        paddingTop: 24, 
-    },
-    emptyText: {
-        textAlign: 'center',
-        marginTop: 50,
-        fontSize: 16,
-        color: '#8A8A8E',
-    }
-});
