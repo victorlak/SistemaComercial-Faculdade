@@ -1,12 +1,15 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import Button from "../../components/Button";
-import  Input  from "../../components/Input";
-import styles from "./styles";
-import { useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
+import Button from "../../components/Button"
+import  Input from "../../components/Input"
+import styles from './styles'
+import { useState, useEffect } from "react"
 import { auth, db, login, register } from "../../services/firebaseConfig";
 import React from "react"
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth"
 import { useNavigation } from "@react-navigation/native"
+import { salvarLocalStorage, buscarLocalStorage, verificaPerfilUsuario } from './Storage';
+import { buscarIdPorCampoUnico } from "./Storage"
+
 
 export default function Index() {
   const [email, setEmail] = useState('');
@@ -16,12 +19,19 @@ export default function Index() {
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const navigation = useNavigation();
 
+  
   const handleLogin = async () => {
     setErro('');
     setMensagemRecuperacao('');
     
     try {
       await signInWithEmailAndPassword(auth, email, senha);
+      let perfil = await verificaPerfilUsuario(email)
+      await salvarLocalStorage(perfil, 'perfil')
+      console.log(perfil);
+      let id_logado: string | null = await buscarIdPorCampoUnico(email)
+      await salvarLocalStorage(id_logado,'id_logado')
+      
       navigation.navigate('Painel');
     } catch (err: any) {
       switch (err.code) {
@@ -57,6 +67,7 @@ export default function Index() {
       setMensagemRecuperacao('Erro ao enviar email de recuperação. Verifique seu email.');
     }
   };
+
 
   return (
     <View style={styles.container}>
