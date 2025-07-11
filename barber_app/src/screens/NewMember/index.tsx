@@ -95,7 +95,6 @@ export default function NewMember() {
       dataIngresso: dataIngresso,
       dataSaida: dataSaida,
       especialidades: servicosSelecionados,
-      servicosRealizados: []
     }
     if (!name.trim()){
       Alert.alert('Erro', 'O campo Nome é obrigatório.');
