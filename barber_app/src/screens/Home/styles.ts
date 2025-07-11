@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
-        backgroundColor: '#F0F2F5',
+        backgroundColor: '#ffffffff',
     },
     container: {
         alignItems: 'center',

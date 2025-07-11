@@ -16,7 +16,6 @@ import { db } from '../../services/firebaseConfig';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { buscarLocalStorage } from '../Login/Storage';
 
-// --- TIPOS DE DADOS ---
 type ServicoRealizado = {
     id: string;
     id_servico: string;
@@ -54,7 +53,6 @@ const formatCurrency = (value: number) => {
 export default function Home() {
     const navigation = useNavigation();
 
-    // --- ESTADOS ---
     const [isLoading, setIsLoading] = useState(true);
     const [perfil, setPerfil] = useState<string | null>(null);
     const [idPerfil, setIdPerfil] = useState<string | null>(null);
@@ -69,7 +67,6 @@ export default function Home() {
     
     const employeeOptions = useMemo(() => ['Todos', ...allBarbers.map(b => b.nome)], [allBarbers]);
 
-    // --- LÓGICA DE DADOS ---
     useEffect(() => {
         async function getInitialData() {
             const userProfile = await buscarLocalStorage('perfil');
@@ -81,7 +78,12 @@ export default function Home() {
     }, []);
 
     useEffect(() => {
-        if (!perfil || !idPerfil) return;
+        if (!perfil) {
+            return;
+        }
+        if (perfil === 'BARBEIRO' && !idPerfil) {
+            return;
+        }
 
         async function fetchData() {
             setIsLoading(true);
@@ -143,13 +145,10 @@ export default function Home() {
         fetchData();
     }, [perfil, idPerfil]);
 
-    // --- CÁLCULOS PARA OS CARDS ---
-    const grossRevenue = useMemo(() => (selectedBarberForRevenue === 'Todos' ? allPerformedServices : allPerformedServices.filter(s => s.nomeBarbeiro === selectedBarberForRevenue)).reduce((sum, s) => sum + s.precoServico, 0), [allPerformedServices, selectedBarberForRevenue]);
-    
     const servicesInPeriod = useMemo(() => {
         const now = new Date();
         return allPerformedServices.filter(service => {
-            if (!service.data) return false;
+            if (!service.data || typeof service.data.split !== 'function') return false;
             const [dia, mes, ano] = service.data.split('/');
             if (!dia || !mes || !ano) return false;
             const serviceDate = new Date(`${ano}-${mes}-${dia}`);
@@ -163,8 +162,14 @@ export default function Home() {
             }
         });
     }, [allPerformedServices, selectedPeriodForNet]);
-
-    const netRevenue = useMemo(() => { const gross = servicesInPeriod.reduce((sum, s) => sum + s.precoServico, 0); const commissions = servicesInPeriod.reduce((sum, s) => sum + (s.precoServico * (s.comissaoServico / 100)), 0); return gross - commissions; }, [servicesInPeriod]);
+    
+    const grossRevenue = useMemo(() => (selectedBarberForRevenue === 'Todos' ? allPerformedServices : allPerformedServices.filter(s => s.nomeBarbeiro === selectedBarberForRevenue)).reduce((sum, s) => sum + s.precoServico, 0), [allPerformedServices, selectedBarberForRevenue]);
+    
+    const netRevenue = useMemo(() => {
+        const gross = servicesInPeriod.reduce((sum, s) => sum + s.precoServico, 0);
+        const commissions = servicesInPeriod.reduce((sum, s) => sum + (s.precoServico * (s.comissaoServico / 100)), 0);
+        return gross - commissions;
+    }, [servicesInPeriod]);
     
     const totalCommissions = useMemo(() => (selectedBarberForCommission === 'Todos' ? allPerformedServices : allPerformedServices.filter(s => s.nomeBarbeiro === selectedBarberForCommission)).reduce((sum, s) => sum + (s.precoServico * (s.comissaoServico / 100)), 0), [allPerformedServices, selectedBarberForCommission]);
     
@@ -174,7 +179,6 @@ export default function Home() {
     
     const barberCommissionInPeriod = useMemo(() => perfil !== 'BARBEIRO' ? 0 : servicesInPeriod.reduce((sum, s) => sum + (s.precoServico * (s.comissaoServico / 100)), 0), [servicesInPeriod, perfil]);
 
-    // --- RENDERIZAÇÃO ---
     const renderAdminView = () => (
         <>
             <CardSelector selectorLabel="Filtrar por Barbeiro" options={employeeOptions} initialSelectedOption={selectedBarberForRevenue} onSelect={setSelectedBarberForRevenue} icon={DinheiroIcon} valueLabel="Receita Bruta" value={formatCurrency(grossRevenue)} iconColor='#61b265' />
@@ -200,7 +204,11 @@ export default function Home() {
     );
 
     if (isLoading) {
-        return ( <SafeAreaView style={[styles.safeArea, { justifyContent: 'center', alignItems: 'center' }]}><ActivityIndicator size="large" color="#1C1C1E" /></SafeAreaView> );
+        return (
+            <SafeAreaView style={[styles.safeArea, { justifyContent: 'center', alignItems: 'center' }]}>
+                <ActivityIndicator size="large" color="#1C1C1E" />
+            </SafeAreaView>
+        );
     }
 
     return (
