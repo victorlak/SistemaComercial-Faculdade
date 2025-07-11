@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Usuario } from '../../types/user';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native';
 // import { Logo } from './Logo';
@@ -10,13 +9,7 @@ import {PerfisUsuario} from '../../types/utils/ProfilesUserTypes';
 import { db } from '../../services/firebaseConfig';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import { useEffect } from 'react';
-/*
-{
-  "nome": "Carlos Andre",
-  ""
-}
 
-*/
 
 type Servico = {
   id: string;
@@ -26,18 +19,6 @@ type Servico = {
   descricao: string;
   duracao: string;
 };
-//(name: string, email: string, perfis: PerfisUsuario[] , senha?: string)
-
-//let userData = new Usuario('victor','victormirandadasilvasouza9999@gmail.com',[PerfisUsuario.ADM])
-
-//console.log(userData);
-
-//let perfis = userData.getPerfis();
-
-//console.log(perfis);
-
-
-//];
 
 
 export default function Service() {

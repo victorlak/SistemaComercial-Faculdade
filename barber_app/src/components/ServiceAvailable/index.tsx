@@ -9,7 +9,7 @@ import { styles } from './styles';
 import Button from '../Button';
 import { PerfisUsuario } from '../../types/utils/ProfilesUserTypes'
 import { useState } from 'react';
-import { Input } from '../Input';
+import  Input  from '../Input';
 import { buscarLocalStorage } from '../../screens/Login/Storage';
 import { collection, addDoc } from "firebase/firestore";
 import {db} from '../../services/firebaseConfig';
