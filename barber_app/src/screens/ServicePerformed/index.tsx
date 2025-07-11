@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, View, Text, FlatList, TouchableOpacity, StatusBar, Platform } from 'react-native';
-import { styles } from './styles';
+import { SafeAreaView, View, Text, FlatList, TouchableOpacity, ActivityIndicator, StyleSheet, Platform, StatusBar } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-
-// Supondo que seus componentes e assets estão nos caminhos corretos
 import SetaEsquerda from '../../assets/icons/ic_setaEsquerda.svg';
 import SearchBar from '../../components/Search';
 import { CardInfo } from '../../components/CardInfo';
@@ -21,13 +18,26 @@ import ColoracaoIconBranco from '../../assets/images/img_coloracaoBranco.png';
 import BarbaIconBranco from '../../assets/images/img_barbaBranco.png';
 import CorteBarbaIconBranco from '../../assets/images/img_corteBarbaBranco.png';
 import HidratacaoIconBranco from '../../assets/images/img_hidratacaoBranco.png';
+import { styles } from './styles';
+import { db } from '../../services/firebaseConfig';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { buscarLocalStorage } from '../Login/Storage';
 
-type ServiceData = {
-  id: string;
-  nome: string;
-  cliente: string;
-  preco: number;
-  data: string;
+type ServicoPerfomed = {
+    id: string;
+    id_servico: string;
+    id_barbeiro: string | null;
+    nomeDoCliente: string;
+    descricaoDoServicoRealizado: string;
+    metodoDePagamento: string;
+    data: string;
+    hora: string;
+}
+
+type ServicoEnriquecido = ServicoPerfomed & {
+    nomeBarbeiro: string;
+    nomeServico: string;
+    precoServico: number;
 };
 
 type ServicePerformedRouteParams = {
@@ -41,160 +51,190 @@ type ServicePerformedRouteParams = {
 type ServicePerformedRouteProp = RouteProp<{ params: ServicePerformedRouteParams }, 'params'>;
 
 const CATEGORIES_DATA: Category[] = [
-  { id: '1', label: 'Corte', iconDefault: CorteIconPreto, iconSelected: CorteIconBranco },
-  { id: '2', label: 'Coloração', iconDefault: ColoracaoIconPreto, iconSelected: ColoracaoIconBranco },
-  { id: '3', label: 'Barba', iconDefault: BarbaIconPreto, iconSelected: BarbaIconBranco },
-  { id: '4', label: 'Corte + Barba', iconDefault: CorteBarbaIconPreto, iconSelected: CorteBarbaIconBranco },
-  { id: '5', label: 'Hidratação', iconDefault: HidratacaoIconPreto, iconSelected: HidratacaoIconBranco },
-];
-
-const ALL_SERVICES_DB: ServiceData[] = [
-  { id: '1', nome: 'Coloração', cliente: 'Carlos Oliveira', data: '02/05/2025 17:15', preco: 70.00 },
-  { id: '2', nome: 'Corte', cliente: 'Pedro Santos', data: '02/05/2025 13:00', preco: 35.00 },
-  { id: '3', nome: 'Corte + Barba', cliente: 'João Silva', data: '02/05/2025 10:30', preco: 55.00 },
-  { id: '4', nome: 'Barba', cliente: 'Carlos Oliveira', data: '01/05/2025 16:00', preco: 25.00 },
-  { id: '5', nome: 'Hidratação', cliente: 'Pedro Santos', data: '01/05/2025 15:30', preco: 45.00 },
-  { id: '6', nome: 'Corte', cliente: 'Carlos Oliveira', data: '01/05/2025 16:00', preco: 35.00 },
-  { id: '7', nome: 'Corte', cliente: 'João Silva', data: '01/05/2025 15:30', preco: 35.00 },
-  { id: '8', nome: 'Barba', cliente: 'Lucas Martins', data: '30/04/2025 11:00', preco: 25.00 },
-  { id: '9', nome: 'Corte + Barba', cliente: 'Ricardo Alves', data: '30/04/2025 14:00', preco: 60.00 },
-  { id: '10', nome: 'Hidratação', cliente: 'João Silva', data: '29/04/2025 18:00', preco: 45.00 },
-  { id: '11', nome: 'Coloração', cliente: 'Pedro Santos', data: '29/04/2025 16:30', preco: 75.00 },
-  { id: '12', nome: 'Corte', cliente: 'Fernanda Lima', data: '28/04/2025 19:00', preco: 40.00 },
-  { id: '13', nome: 'Barba', cliente: 'Carlos Oliveira', data: '28/04/2025 17:00', preco: 25.00 },
-  { id: '14', nome: 'Corte', cliente: 'Lucas Martins', data: '27/04/2025 10:00', preco: 35.00 },
-  { id: '15', nome: 'Hidratação', cliente: 'Ricardo Alves', data: '27/04/2025 09:30', preco: 50.00 },
-  { id: '16', nome: 'Corte + Barba', cliente: 'João Silva', data: '26/04/2025 15:00', preco: 55.00 },
-  { id: '17', nome: 'Corte', cliente: 'Carlos Oliveira', data: '25/04/2025 12:00', preco: 35.00 },
-  { id: '18', nome: 'Barba', cliente: 'Pedro Santos', data: '25/04/2025 11:30', preco: 30.00 },
-  { id: '19', nome: 'Coloração', cliente: 'Fernanda Lima', data: '24/04/2025 14:00', preco: 80.00 },
-  { id: '20', nome: 'Corte', cliente: 'Ricardo Alves', data: '24/04/2025 10:00', preco: 35.00 },
+    { id: '1', label: 'Corte', iconDefault: CorteIconPreto, iconSelected: CorteIconBranco },
+    { id: '2', label: 'Coloração', iconDefault: ColoracaoIconPreto, iconSelected: ColoracaoIconBranco },
+    { id: '3', label: 'Barba', iconDefault: BarbaIconPreto, iconSelected: BarbaIconBranco },
+    { id: '4', label: 'Corte + Barba', iconDefault: CorteBarbaIconPreto, iconSelected: CorteBarbaIconBranco },
+    { id: '5', label: 'Hidratação', iconDefault: HidratacaoIconPreto, iconSelected: HidratacaoIconBranco },
 ];
 
 export default function ServicePerformed() {
-  const navigation = useNavigation();
-  const route = useRoute<ServicePerformedRouteProp>();
-  // ... (lógica dos hooks e useEffect permanece a mesma)
-  const receivedFilters = route.params?.filters;
+    const navigation = useNavigation();
+    const route = useRoute<ServicePerformedRouteProp>();
+    const receivedFilters = route.params?.filters;
+    const areFiltersActive = !!receivedFilters;
 
-  const areFiltersActive = !!receivedFilters;
+    const [isLoading, setIsLoading] = useState(true);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const [servicosEnriquecidos, setServicosEnriquecidos] = useState<ServicoEnriquecido[]>([]);
+    const [filteredServices, setFilteredServices] = useState<ServicoEnriquecido[]>([]);
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [filteredServices, setFilteredServices] = useState<ServiceData[]>(ALL_SERVICES_DB);
+    const [perfil, setPerfil] = useState<string | null>(null);
+    const [idPerfil, setIdPerfil] = useState<string | null>(null);
 
-  useEffect(() => {
-    let services = [...ALL_SERVICES_DB];
-
-    if (receivedFilters) {
-        if (receivedFilters.services.length > 0) {
-            services = services.filter(service => receivedFilters.services.includes(service.nome));
+    useEffect(() => {
+        async function obterUser() {
+            const perfilStorage = await buscarLocalStorage('perfil');
+            const idStorage = await buscarLocalStorage('id_logado');
+            setPerfil(perfilStorage);
+            setIdPerfil(idStorage);
         }
-        if (receivedFilters.barbers.length > 0) {
-            services = services.filter(service => receivedFilters.barbers.includes(service.cliente));
-        }
-        if (receivedFilters.price) {
-            services = services.filter(service => 
-                service.preco >= receivedFilters.price.min && service.preco <= receivedFilters.price.max
-            );
-        }
-        if (receivedFilters.dateOption) {
-            const now = new Date();
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
-            services = services.filter(service => {
-                const [datePart] = service.data.split(' ');
-                const [day, month, year] = datePart.split('/').map(Number);
-                const serviceDate = new Date(year, month - 1, day);
-
-                switch (receivedFilters.dateOption) {
-                    case 'Hoje':
-                        return serviceDate.toDateString() === today.toDateString();
-                    case 'Últimos 7 dias':
-                        const sevenDaysAgo = new Date(today);
-                        sevenDaysAgo.setDate(today.getDate() - 7);
-                        return serviceDate >= sevenDaysAgo && serviceDate <= today;
-                    case 'Este mês':
-                        return serviceDate.getMonth() === today.getMonth() &&
-                               serviceDate.getFullYear() === today.getFullYear();
-                    default:
-                        return true;
-                }
-            });
-        }
-    } 
-    else if (selectedCategory) {
-        const categoryLabel = CATEGORIES_DATA.find(cat => cat.id === selectedCategory)?.label;
-        if (categoryLabel) {
-            services = services.filter(service => service.nome === categoryLabel);
-        }
+        obterUser();
+    }, []);
+    
+    async function buscarBarbeiros() {
+        const barbeirosCol = collection(db, "Barbeiro");
+        const snapshot = await getDocs(barbeirosCol);
+        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() as { nome: string } }));
     }
 
-    if (searchQuery.trim() !== '') {
-        const lowercasedQuery = searchQuery.toLowerCase();
-        services = services.filter(service =>
-            service.nome.toLowerCase().includes(lowercasedQuery) ||
-            service.cliente.toLowerCase().includes(lowercasedQuery)
-        );
+    async function buscarServicos() {
+        const servicosCol = collection(db, "Servicos");
+        const snapshot = await getDocs(servicosCol);
+        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() as { nome: string, preco: number } }));
+    }
+
+    async function buscarServicosRealizados(userProfile: string, userId: string) {
+        const servicosRealizadosCol = collection(db, "ServicosRealizados");
+        let q;
+
+        if (userProfile === 'BARBEIRO') {
+            q = query(servicosRealizadosCol, where("id_barbeiro", "==", userId));
+        } else {
+            q = query(servicosRealizadosCol);
+        }
+
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map(doc => ({ id: doc.id, ...(doc.data() as Omit<ServicoPerfomed, 'id'>) }));
     }
     
-    setFilteredServices(services);
-  }, [searchQuery, selectedCategory, receivedFilters]);
-
-  const handleGoBack = () => navigation.navigate('Home');
-  const handleFilter = () => navigation.navigate('Filters');
-
-  const handleSelectCategory = (categoryId: string) => {
-    if (selectedCategory === categoryId) {
-      setSelectedCategory(null);
-    } else {
-      setSelectedCategory(categoryId);
-    }
-  };
-
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      <FlatList
-        ListHeaderComponent={
-          <>
-            <View style={styles.header}>
-              <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-                <SetaEsquerda width={24} height={24} color="#1C1C1E" />
-              </TouchableOpacity>
-              <Text style={styles.headerTitle}>Serviços Realizados</Text>
-            </View>
-            <View style={styles.contentPadding}>
-                <SearchBar 
-                    searchQuery={searchQuery}
-                    setSearchQuery={setSearchQuery}
-                    onFilterPress={handleFilter}
-                    isFilterActive={areFiltersActive}
-                />
-                <CardInfo
-                    label="Total de Seriços Realizados"
-                    value={ALL_SERVICES_DB.length.toString()}
-                    icon={TesouraIcon}
-                />
-                <CategoryFilter
-                    categories={CATEGORIES_DATA}
-                    selectedCategoryId={selectedCategory}
-                    onSelectCategory={handleSelectCategory}
-                />
-            </View>
-          </>
+    useEffect(() => {
+        if (!perfil || !idPerfil) {
+            return; 
         }
-        data={filteredServices}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => (
-            <View style={styles.contentPadding}>
-                <ServiceItemCard data={item} />
+
+        const carregarECombinarDados = async () => {
+            setIsLoading(true);
+            try {
+                const [servicosRealizadosData, barbeirosData, servicosData] = await Promise.all([
+                    buscarServicosRealizados(perfil, idPerfil),
+                    buscarBarbeiros(),
+                    buscarServicos()
+                ]);
+
+                const barbeirosMap = new Map(barbeirosData.map(b => [b.id, b.nome]));
+                const servicosMap = new Map(servicosData.map(s => [s.id, { nome: s.nome, preco: s.preco }]));
+
+                const dadosCombinados: ServicoEnriquecido[] = servicosRealizadosData.map(sr => {
+                    const nomeBarbeiro = barbeirosMap.get(sr.id_barbeiro) || 'Não encontrado';
+                    const servicoInfo = servicosMap.get(sr.id_servico);
+                    return { ...sr, nomeBarbeiro, nomeServico: servicoInfo?.nome || 'Não encontrado', precoServico: servicoInfo?.preco || 0, };
+                }).sort((a, b) => {
+                    const [diaA, mesA, anoA] = a.data.split('/');
+                    const dataA = new Date(`${anoA}-${mesA}-${diaA}T${a.hora}`);
+
+                    const [diaB, mesB, anoB] = b.data.split('/');
+                    const dataB = new Date(`${anoB}-${mesB}-${diaB}T${b.hora}`);
+
+                    return dataB.getTime() - dataA.getTime();
+                });
+                
+                setServicosEnriquecidos(dadosCombinados);
+            } catch (error) {
+                console.error("Erro ao carregar e combinar dados:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        carregarECombinarDados();
+    }, [perfil, idPerfil]);
+
+    useEffect(() => {
+        let servicesToFilter = [...servicosEnriquecidos];
+
+        if (receivedFilters) {
+            if (receivedFilters.services.length > 0) {
+                servicesToFilter = servicesToFilter.filter(s => receivedFilters.services.includes(s.nomeServico));
+            }
+            if (receivedFilters.barbers.length > 0) {
+                servicesToFilter = servicesToFilter.filter(s => receivedFilters.barbers.includes(s.nomeBarbeiro));
+            }
+            if (receivedFilters.price) {
+                servicesToFilter = servicesToFilter.filter(s => s.precoServico >= receivedFilters.price.min && s.precoServico <= receivedFilters.price.max);
+            }
+        }
+        
+        if (selectedCategory) {
+            const categoryLabel = CATEGORIES_DATA.find(cat => cat.id === selectedCategory)?.label;
+            if (categoryLabel) {
+                servicesToFilter = servicesToFilter.filter(s => s.nomeServico === categoryLabel);
+            }
+        }
+
+        if (searchQuery.trim() !== '') {
+            const lowercasedQuery = searchQuery.toLowerCase();
+            servicesToFilter = servicesToFilter.filter(s =>
+                s.nomeServico.toLowerCase().includes(lowercasedQuery) ||
+                s.nomeBarbeiro.toLowerCase().includes(lowercasedQuery)
+            );
+        }
+
+        setFilteredServices(servicesToFilter);
+    }, [searchQuery, selectedCategory, receivedFilters, servicosEnriquecidos]);
+
+    const handleGoBack = () => navigation.navigate('Home');
+    const handleFilter = () => navigation.navigate('Filters');
+    const handleSelectCategory = (categoryId: string) => {
+        setSelectedCategory(prev => (prev === categoryId ? null : categoryId));
+    };
+
+    return (
+        <SafeAreaView style={styles.safeArea}>
+            <View style={styles.header}>
+                <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
+                    <SetaEsquerda width={24} height={24} color="#1C1C1E" />
+                </TouchableOpacity>
+                <Text style={styles.headerTitle}>Serviços Realizados</Text>
             </View>
-        )}
-        showsVerticalScrollIndicator={false}
-        ListFooterComponent={<View style={{ height: 90 }} />}
-      />
-      
-      <NavBar />
-    </SafeAreaView>
-  );
+            
+            <FlatList
+                ListHeaderComponent={
+                    <View style={styles.contentPadding}>
+                        <SearchBar
+                            searchQuery={searchQuery}
+                            setSearchQuery={setSearchQuery}
+                            onFilterPress={handleFilter}
+                            isFilterActive={areFiltersActive}
+                        />
+                        <CardInfo
+                            label="Total de Serviços Realizados"
+                            value={servicosEnriquecidos.length.toString()}
+                            icon={TesouraIcon}
+                        />
+                        <CategoryFilter
+                            categories={CATEGORIES_DATA}
+                            selectedCategoryId={selectedCategory}
+                            onSelectCategory={handleSelectCategory}
+                        />
+                    </View>
+                }
+                data={filteredServices}
+                keyExtractor={item => item.id}
+                renderItem={({ item }) => (
+                    <View style={{ paddingHorizontal: 28, paddingTop: 12 }}>
+                        <ServiceItemCard data={item} />
+                    </View>
+                )}
+                showsVerticalScrollIndicator={false}
+                ListEmptyComponent={
+                    isLoading ? 
+                        <ActivityIndicator size="large" color="#1C1C1E" style={{ marginTop: 50 }} /> : 
+                        <Text style={styles.emptyText}>Nenhum serviço encontrado.</Text>
+                }
+                ListFooterComponent={<View style={{ height: 100 }} />}
+            />
+            <NavBar />
+        </SafeAreaView>
+    );
 }
