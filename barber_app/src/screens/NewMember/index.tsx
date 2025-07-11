@@ -131,6 +131,7 @@ export default function NewMember() {
       especialidades: servicosSelecionados,
       servicosRealizados: [],
       ativo: true
+
     }
 
     if (!name.trim()) {

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, View, Text, FlatList, TouchableOpacity, ActivityIndicator, StyleSheet, Platform, StatusBar } from 'react-native';
+import { SafeAreaView, View, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { styles } from './styles';
+
 import SetaEsquerda from '../../assets/icons/ic_setaEsquerda.svg';
 import SearchBar from '../../components/Search';
 import { CardInfo } from '../../components/CardInfo';
@@ -18,7 +20,7 @@ import ColoracaoIconBranco from '../../assets/images/img_coloracaoBranco.png';
 import BarbaIconBranco from '../../assets/images/img_barbaBranco.png';
 import CorteBarbaIconBranco from '../../assets/images/img_corteBarbaBranco.png';
 import HidratacaoIconBranco from '../../assets/images/img_hidratacaoBranco.png';
-import { styles } from './styles';
+
 import { db } from '../../services/firebaseConfig';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { buscarLocalStorage } from '../Login/Storage';
@@ -95,11 +97,11 @@ export default function ServicePerformed() {
         return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() as { nome: string, preco: number } }));
     }
 
-    async function buscarServicosRealizados(userProfile: string, userId: string) {
+    async function buscarServicosRealizados(userProfile: string, userId: string | null) {
         const servicosRealizadosCol = collection(db, "ServicosRealizados");
         let q;
 
-        if (userProfile === 'BARBEIRO') {
+        if (userProfile === 'BARBEIRO' && userId) {
             q = query(servicosRealizadosCol, where("id_barbeiro", "==", userId));
         } else {
             q = query(servicosRealizadosCol);
@@ -110,11 +112,14 @@ export default function ServicePerformed() {
     }
     
     useEffect(() => {
-        if (!perfil || !idPerfil) {
-            return; 
+        if (!perfil) {
+            return;
+        }
+        if (perfil === 'BARBEIRO' && !idPerfil) {
+            return;
         }
 
-        const carregarECombinarDados = async () => {
+        async function carregarECombinarDados() {
             setIsLoading(true);
             try {
                 const [servicosRealizadosData, barbeirosData, servicosData] = await Promise.all([
@@ -127,17 +132,23 @@ export default function ServicePerformed() {
                 const servicosMap = new Map(servicosData.map(s => [s.id, { nome: s.nome, preco: s.preco }]));
 
                 const dadosCombinados: ServicoEnriquecido[] = servicosRealizadosData.map(sr => {
-                    const nomeBarbeiro = barbeirosMap.get(sr.id_barbeiro) || 'Não encontrado';
+                    const nomeBarbeiro = barbeirosMap.get(sr.id_barbeiro || '') || 'Não encontrado';
                     const servicoInfo = servicosMap.get(sr.id_servico);
                     return { ...sr, nomeBarbeiro, nomeServico: servicoInfo?.nome || 'Não encontrado', precoServico: servicoInfo?.preco || 0, };
                 }).sort((a, b) => {
-                    const [diaA, mesA, anoA] = a.data.split('/');
-                    const dataA = new Date(`${anoA}-${mesA}-${diaA}T${a.hora}`);
-
-                    const [diaB, mesB, anoB] = b.data.split('/');
-                    const dataB = new Date(`${anoB}-${mesB}-${diaB}T${b.hora}`);
-
-                    return dataB.getTime() - dataA.getTime();
+                    if (!b.data || !b.hora) return -1;
+                    if (!a.data || !a.hora) return 1;
+                    try {
+                        const [diaA, mesA, anoA] = a.data.split('/');
+                        const dataA = new Date(`${anoA}-${mesA}-${diaA}T${a.hora}`);
+                        const [diaB, mesB, anoB] = b.data.split('/');
+                        const dataB = new Date(`${anoB}-${mesB}-${diaB}T${b.hora}`);
+                        if (isNaN(dataB.getTime())) return -1;
+                        if (isNaN(dataA.getTime())) return 1;
+                        return dataB.getTime() - dataA.getTime();
+                    } catch (e) {
+                        return 0;
+                    }
                 });
                 
                 setServicosEnriquecidos(dadosCombinados);

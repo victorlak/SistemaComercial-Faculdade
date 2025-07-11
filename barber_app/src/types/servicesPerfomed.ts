@@ -1,3 +1,5 @@
+import {Servico} from './services'
+
 type ServicoPerfomed ={
   id_servico: string;
   id_barbeiro: string | null;

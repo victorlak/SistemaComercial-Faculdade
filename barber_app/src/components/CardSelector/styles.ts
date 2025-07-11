@@ -1,12 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-
   wrapper: {
     width: '100%',
     position: 'relative',
   },
-
   periodSelector: {
     marginBottom: 2,
   },
@@ -68,5 +66,11 @@ export const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     fontSize: 12,
     color: '#333',
-  }
+  },
+
+  iconImage: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
+  },
 });

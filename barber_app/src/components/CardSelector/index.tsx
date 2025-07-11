@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ImageSourcePropType } from 'react-native';
 import { SvgProps } from 'react-native-svg';
-import { styles } from './styles';
 import CardContainer from '../CardContainer';
 import ArrowDownIcon from '../../assets/icons/ic_setaParaBaixo.svg';
+import { styles } from './styles';
 
 const zIndexManager = (() => {
   let zCounter = 1;
@@ -20,7 +20,7 @@ type Props = {
   options: string[];
   initialSelectedOption: string;
   onSelect: (option: string) => void;
-  icon: React.FC<SvgProps>;
+  icon: React.FC<SvgProps> | ImageSourcePropType;
   valueLabel: string;
   value: string;
   iconColor?: string;
@@ -39,6 +39,8 @@ export const CardSelector = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const [currentSelection, setCurrentSelection] = useState(initialSelectedOption);
   const [dynamicZIndex, setDynamicZIndex] = useState(1);
+
+  const isSvgComponent = typeof Icon === 'function';
 
   const handleSelectOption = (option: string) => {
     setCurrentSelection(option);
@@ -98,7 +100,11 @@ export const CardSelector = ({
             width: '100%'
           }}>
             <Text style={styles.commissionLabel}>{valueLabel}</Text>
-            <Icon width={24} height={24} fill={iconColor} />
+            {isSvgComponent ? (
+              <Icon width={24} height={24} fill={iconColor} />
+            ) : (
+              <Image source={Icon as ImageSourcePropType} style={styles.iconImage} />
+            )}
           </View>
           <Text style={styles.commissionValue}>{value}</Text>
         </View>
