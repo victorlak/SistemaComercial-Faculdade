@@ -129,7 +129,8 @@ export default function NewMember() {
       dataIngresso: dataIngresso,
       dataSaida: dataSaida,
       especialidades: servicosSelecionados,
-      servicosRealizados: []
+      servicosRealizados: [],
+      ativo: true
     }
 
     if (!name.trim()) {
@@ -169,7 +170,8 @@ export default function NewMember() {
 
     try {
       if (memberToEdit && memberToEdit.id) {
-        await updateMember(memberToEdit.id, novoBarbeiro);
+        const updateData = {...novoBarbeiro, ativo: memberToEdit.ativo}
+        await updateMember(memberToEdit.id, updateData);
         Alert.alert('Sucesso', 'Membro atualizado com sucesso!');
       } else {
         await addMember(novoBarbeiro as Barbeiro);
@@ -273,7 +275,6 @@ export default function NewMember() {
             textStyle={styles.textButton}
           />
         </View>
-
 
       </ScrollView>
     </View>

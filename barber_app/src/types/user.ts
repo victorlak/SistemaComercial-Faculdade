@@ -6,10 +6,10 @@ type Barbeiro ={
     email: string;
     telefone: string;
     dataIngresso: string;
-    dataSaida: string;
+    dataSaida?: string;
     especialidades: string[];
     servicosRealizados: ServicoPerfomed[];
-    
+    ativo: boolean;
 }
 
 export {Barbeiro};

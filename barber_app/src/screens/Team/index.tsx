@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, SafeAreaView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { NavBar } from '../../components/NavBar';
 import Button from '../../components/Button';
 import { CardUpdate } from '../../components/CardUpdate';
@@ -17,9 +17,12 @@ type TeamScreenNavigationProp = NativeStackNavigationProp<
   'Equipe'
 >;
 
+type MemberFilter = 'all' | 'active' | 'inactive';
+
 export default function Team() {
   const [barbeirosDoFirebase, setBarbeirosDoFirebase] = useState<Barbeiro[]>([]);
   const [barbeirosParaExibicao, setBarbeirosParaExibicao] = useState<Barbeiro[]>([]);
+  const [currentFilter, setCurrentFilter] = useState<MemberFilter>('active');
 
   const navigation = useNavigation<TeamScreenNavigationProp>();
 
@@ -65,8 +68,23 @@ export default function Team() {
   };
 
   useEffect(() => {
-    carregarDados();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      carregarDados();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  const [filteredBarbeiros, setFilteredBarbeiros] = useState<Barbeiro[]>([]);
+
+  useEffect(() => {
+    let filtered = barbeirosParaExibicao;
+    if (currentFilter === 'active') {
+      filtered = barbeirosParaExibicao.filter(membro => membro.ativo === true);
+    } else if (currentFilter === 'inactive') {
+      filtered = barbeirosParaExibicao.filter(membro => membro.ativo === false);
+    }
+    setFilteredBarbeiros(filtered);
+  }, [barbeirosParaExibicao, currentFilter]);
 
   const handlePress = () => {
     navigation.navigate('NewMember' as never);
@@ -74,6 +92,47 @@ export default function Team() {
 
   const handleEditMember = (membroParaEditar: Barbeiro) => {
     navigation.navigate('NewMember', { memberToEdit: membroParaEditar });
+  };
+
+  const handleToggleMemberStatus = async (memberId: string, memberName: string, currentStatus: boolean) => {
+    const newStatus = !currentStatus;
+    const actionText = newStatus ? 'habilitar' : 'desativar';
+    const statusText = newStatus ? 'ativo(a)' : 'inativo(a)';
+
+    // Alert.alert(
+    //   `Confirmar ${actionText}`,
+    //   `Tem certeza que deseja ${actionText} ${memberName}? O membro ficará ${statusText}.`,
+    //   [
+    //     {
+    //       text: "Cancelar",
+    //       style: "cancel"
+    //     },
+    //     {
+    //       text: actionText.charAt(0).toUpperCase() + actionText.slice(1),
+    //       onPress: async () => {
+    //         try {
+    //           const barbeiroRef = doc(db, "Barbeiro", memberId);
+    //           await updateDoc(barbeiroRef, { ativo: newStatus });
+    //           Alert.alert("Sucesso", `${memberName} foi ${actionText} com sucesso e agora está ${statusText}!`);
+    //           carregarDados();
+    //         } catch (error) {
+    //           console.error(`Erro ao ${actionText} membro:`, error);
+    //           Alert.alert("Erro", `Não foi possível ${actionText} ${memberName}. Tente novamente.`);
+    //         }
+    //       }
+    //     }
+    //   ]
+    // );
+
+    try {
+      const barbeiroRef = doc(db, "Barbeiro", memberId);
+      await updateDoc(barbeiroRef, { ativo: newStatus });
+      carregarDados(); 
+    } catch (error) {
+      console.error(`Erro ao ${actionText} membro:`, error);
+      Alert.alert("Erro", `Não foi possível ${actionText} ${memberName}. Tente novamente.`);
+    }
+
   };
 
   return (
@@ -84,8 +143,30 @@ export default function Team() {
           <Button label="Novo Membro" style={styles.newMemberButton} textStyle={styles.newMemberText} onPress={handlePress} />
         </View>
 
+        {/* Botoes de Filtro */}
+        <View style={styles.filterContainer}>
+          <Button
+            style={[styles.filterButton, currentFilter === 'active' && styles.filterButtonActive]}
+            label='Ativos'
+            textStyle={[styles.filterButtonText, currentFilter === 'active' && styles.filterButtonTextActive]}
+            onPress={() => setCurrentFilter('active')}
+          />
+          <Button
+            style={[styles.filterButton, currentFilter === 'inactive' && styles.filterButtonActive]}
+            label='Inativos'
+            textStyle={[styles.filterButtonText, currentFilter === 'inactive' && styles.filterButtonTextActive]}
+            onPress={() => setCurrentFilter('inactive')}
+          />
+          <Button
+            style={[styles.filterButton, currentFilter === 'all' && styles.filterButtonActive]}
+            label='Todos'
+            textStyle={[styles.filterButtonText, currentFilter === 'all' && styles.filterButtonTextActive]}
+            onPress={() => setCurrentFilter('all')}
+          />
+        </View>
+
         <View style={styles.cardsContainer}>
-          {barbeirosParaExibicao.map((membroExibicao) => {
+          {filteredBarbeiros.map((membroExibicao) => {
             const membroOriginal = barbeirosDoFirebase.find(b => b.id === membroExibicao.id);
             return (
               <CardUpdate
@@ -95,6 +176,7 @@ export default function Team() {
                 specialties={membroExibicao.especialidades}
                 phone={membroExibicao.telefone}
                 dateSince={membroExibicao.dataIngresso}
+                isActive={membroExibicao.ativo}
                 onEdit={() => {
 
                   if (membroOriginal) {
@@ -104,11 +186,14 @@ export default function Team() {
                     Alert.alert("Erro", "Não foi possível carregar os detalhes do membro para edição.");
                   }
                 }}
-                onRemove={() => console.log(`Remover membro: ${membroExibicao.nome}`)}
+                onToggleStatus={() => handleToggleMemberStatus(membroExibicao.id!, membroExibicao.nome, membroExibicao.ativo)}
                 style={styles.cardUpdateStyle}
               />
             );
           })}
+          {filteredBarbeiros.length === 0 && (
+            <Text style={styles.noMembersText}>Nenhum membro encontrado neste filtro.</Text>
+          )}
         </View>
       </ScrollView>
       <NavBar />

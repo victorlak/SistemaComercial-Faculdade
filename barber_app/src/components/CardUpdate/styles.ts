@@ -52,6 +52,7 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 2,
         marginRight: 8,
+        marginBottom: 6,
     },
     specialtyText: {
         fontFamily: 'Poppins-Medium',

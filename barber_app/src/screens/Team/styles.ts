@@ -40,6 +40,46 @@ const styles = StyleSheet.create({
     cardUpdateStyle: {
         marginBottom: 30,
     },
+    filterContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignSelf: 'center',
+        backgroundColor: '#FFF',
+        borderRadius: 8,
+        marginVertical: 15,
+        padding: 5,
+        width: '90%',
+    },
+    filterButton: {
+        backgroundColor: '#FFF',
+        height: 35,
+        width: 80,
+        borderRadius: 18,
+        paddingHorizontal: 2,
+        marginBottom: 10,
+        margin: 1,
+        borderWidth: 1,
+        borderColor: "#d0d0d0",
+        flex: 1,
+        alignItems: 'center',
+    },
+    filterButtonActive: {
+        backgroundColor: '#595858', 
+    },
+    filterButtonText: {
+        fontSize: 14,
+        color: '#000000',
+        fontFamily: 'Poppins-Medium'
+    },
+    filterButtonTextActive: {
+        color: '#FFFFFF', 
+    },
+    noMembersText: {
+        textAlign: 'center',
+        marginTop: 20,
+        fontSize: 16,
+        color: '#666',
+    },
 
 });
 
