@@ -1,5 +1,3 @@
-
-
 type Barbeiro ={
     nome: string;
     email: string;
