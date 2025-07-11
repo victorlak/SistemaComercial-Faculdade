@@ -86,8 +86,8 @@ export const styles = StyleSheet.create({
         marginRight: 8,
         justifyContent: 'center',
         paddingHorizontal: 2,
-        height: 23,
-        width: 72,
+        height: 30,
+        width: 75,
     },
     editButtonText: {
         fontFamily: 'Poppins-Medium',
@@ -105,8 +105,8 @@ export const styles = StyleSheet.create({
         marginRight: 8,
         justifyContent: 'center',
         paddingHorizontal: 2,
-        height: 23,
-        width: 72,
+        height: 30,
+        width: 75,
     },
     removeButtonText: {
         fontFamily: 'Poppins-Medium',
