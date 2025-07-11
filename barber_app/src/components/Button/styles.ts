@@ -13,10 +13,9 @@ export const styles = StyleSheet.create({
         color: "#FFF",
         fontFamily: "Poppins-Medium",
     },
-
-     container: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-    }
+    iconImage: {
+        width: 24,
+        height: 24,
+        resizeMode: 'contain',
+    },
 })

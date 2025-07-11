@@ -12,10 +12,10 @@ async function buscarIdPorCampoUnico(
     const snapshot = await getDocs(q);
 
     if (!snapshot.empty) {
-      const doc = snapshot.docs[0]; // só deve haver 1 resultado
+      const doc = snapshot.docs[0];
       return doc.id;
     } else {
-      return null; // não encontrou
+      return null;
     }
   } catch (error) {
     console.error("Erro ao buscar ID:", error);
@@ -24,37 +24,37 @@ async function buscarIdPorCampoUnico(
 }
 
 
-async function verificaPerfilUsuario(email: String){
-      const usuariosRef = collection(db, "Barbeiro");
-  const q = query(usuariosRef, where("email", "==", email));
+async function verificaPerfilUsuario(email: string){
+    const usuariosRef = collection(db, "Barbeiro");
+    const q = query(usuariosRef, where("email", "==", email));
 
-  const querySnapshot = await getDocs(q);
+    const querySnapshot = await getDocs(q);
 
-  if (!querySnapshot.empty) {
-    // Existe pelo menos um documento com o e-mail fornecido
-    return 'BARBEIRO' // User é barbeiro;
-  } else {
-    // Nenhum documento encontrado
-    return 'ADM' // User é ADM;
-  }
+    if (!querySnapshot.empty) {
+        return 'BARBEIRO';
+    } else {
+        return 'ADM';
+    }
 }
 
 const salvarLocalStorage = async (conteudo: string | null, key: string) => {
-  try {
-    await AsyncStorage.setItem(key, conteudo);
-  } catch (error) {
-    console.error('Erro ao salvar tipo de usuário:', error);
-  }
+    try {
+        // Se o conteúdo for null ou undefined, salve uma string vazia. Senão, salve o conteúdo.
+        const valorParaSalvar = conteudo ?? '';
+        await AsyncStorage.setItem(key, valorParaSalvar);
+    } catch (error) {
+        console.error(`Erro ao salvar a chave '${key}':`, error);
+    }
 };
 
-const buscarLocalStorage = async (key: string | null) => {
-  try {
-    const conteudo = await AsyncStorage.getItem(key);
-    return conteudo;
-  } catch (error) {
-    console.error('Erro ao obter tipo de usuário:', error);
-    return '';
-  }
+const buscarLocalStorage = async (key: string) => {
+    try {
+        const conteudo = await AsyncStorage.getItem(key);
+        return conteudo;
+    } catch (error) {
+        console.error('Erro ao obter tipo de usuário:', error);
+        return null; // Retornar null em caso de erro é mais consistente
+    }
 };
 
 export {

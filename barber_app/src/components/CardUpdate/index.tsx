@@ -17,7 +17,9 @@ type Props = {
     textStyle?: TextStyle;
     children?: ReactNode;
     onEdit?: () => void;
-    onRemove?: () => void;
+
+    isActive?: boolean;
+    onToggleStatus?: () => void;
 
     //Props para Serviços
     description?: string;
@@ -40,7 +42,8 @@ export const CardUpdate = ({
     textStyle, 
     children,
     onEdit,
-    onRemove,
+    isActive = true,
+    onToggleStatus,
     description,
     duration,
     commission,
@@ -54,6 +57,9 @@ export const CardUpdate = ({
     const isServiceCard = description || duration || commission || price;
     const isTeamCard = profileImage || email || phone || dateSince || (specialties && specialties.length > 0);
 
+    const toggleButtonLabel = isActive ? 'Desativar' : 'Habilitar';
+    const toggleButtonColor = isActive ? '#FF3033' : '#30A145';
+
     return(
         <CardContainer>
             
@@ -63,7 +69,7 @@ export const CardUpdate = ({
                         <Image source={profileImage} style={styles.profileImage}/>
                     )}
                     <View style={styles.headerTextContainerTeam}>
-                        <Text style={[styles.title, textStyle]}>{label}</Text>
+                        <Text style={[styles.title, textStyle]}>{label} {isActive ? '' : '(Inativo)'}</Text>
                         {email && <Text style={styles.text}>{email}</Text>}
                     </View>
                 </View>
@@ -139,11 +145,10 @@ export const CardUpdate = ({
                     iconSize={17}
                 />
                 <Button
-                    label="Excluir"
-                    onPress={onRemove}
-                    icon={DeleteIcon}
-                    style={styles.removeButton}
-                    textStyle={styles.removeButtonText}
+                    label={toggleButtonLabel}
+                    onPress={onToggleStatus}
+                    style={[styles.removeButton, {borderColor: toggleButtonColor}]}
+                    textStyle={[styles.removeButtonText, {color: toggleButtonColor}]}
                     iconColor="#FF3033"
                     iconSize={17}
                 />
