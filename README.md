@@ -114,8 +114,8 @@ Este projeto utiliza a licença MIT. Veja o arquivo LICENSE para mais detalhes.
 
 ## Créditos
 
-- Desenvolvedores: [Karla Ferreira](https://github.com/kfrural), [Victor Miranda], [Igor Xisto], [Myllena Antoneli], [Marcelo Patricio]
-- Orientador: [Gustavo Teixeira]
+- Desenvolvedores: [Karla Ferreira](https://github.com/kfrural), [Victor Miranda](https://github.com/victorlak), [Igor Xisto](https://github.com/IgorXF), [Myllena Antoneli](https://github.com/mylenaantonelli), [Marcelo Patricio](https://github.com/MarceloP25)
+- Orientador: [Gustavo Teixeira](https://github.com/gustavomite)
 
 ## Contato
 
