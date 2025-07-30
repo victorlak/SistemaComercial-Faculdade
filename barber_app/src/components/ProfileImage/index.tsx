@@ -1,16 +1,72 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Image, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-//import { storage } from '../../services/firebaseConfig';
+import { db, storage } from '../../services/firebaseConfig';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { MaterialIcons } from '@expo/vector-icons';
 import styles from './styles';
+import { buscarLocalStorage } from '../../screens/Login/Storage';
+import { doc, getDoc } from 'firebase/firestore';
 
+interface UserData {
+  nome: string;
+  email: string;
+  telefone: string;
+  dataIngresso: string;
+  //nomeBarbearia: string;
+  //enderecoBarbearia: string;
+}
 
 const ProfileImage: React.FC = () => {
-  const userId = "id"; // Substituir pelo caminho correto
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [perfil, setPerfil] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [atuacao, setAtuacao] = useState('');
+
+
+  useEffect(() => {
+    async function getInitialData() {
+      const userProfile = await buscarLocalStorage('perfil');
+      const userIdStored = await buscarLocalStorage('id_logado');
+      setPerfil(userProfile);
+      setUserId(userIdStored);
+    }
+    getInitialData();
+  }, []);
+
+    useEffect(() => {
+      async function fetchUserData() {
+        if (!userId || !perfil) return;
+  
+        // Define a coleção correta com base no perfil
+        const collectionName = perfil === 'ADM' ? 'Adm' : perfil === 'BARBEIRO' ? 'Barbeiro' : '';
+        setAtuacao(collectionName)
+
+        if (!collectionName) {
+          Alert.alert('Erro', 'Perfil inválido.');
+          setLoading(false);
+          return;
+        }
+  
+        try {
+          const userRef = doc(db, collectionName, userId);
+          const snapshot = await getDoc(userRef);
+          if (snapshot.exists()) {
+            setUserData(snapshot.data() as UserData);
+          } else {
+            Alert.alert('Erro', 'Usuário não encontrado.');
+          }
+        } catch (error) {
+          Alert.alert('Erro', 'Erro ao buscar dados do usuário.');
+        } finally {
+          setLoading(false);
+        }
+      }
+  
+      fetchUserData();
+    }, [userId, perfil]);
 
   const loadImage = async () => {
     try {
@@ -53,6 +109,22 @@ const ProfileImage: React.FC = () => {
     loadImage();
   }, []);
 
+    if (loading) {
+      return (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <ActivityIndicator size="large" color="#1a1a77" />
+        </View>
+      );
+    }
+  
+    if (!userData) {
+      return (
+        <View style={{ padding: 16 }}>
+          <Text style={{ color: 'red', fontSize: 16 }}>Erro ao carregar dados do usuário.</Text>
+        </View>
+      );
+    }
+
   return (
     <TouchableOpacity style={styles.card} onPress={handlePickImage} activeOpacity={0.8}>
       <View style={styles.profileContainer}>
@@ -65,8 +137,8 @@ const ProfileImage: React.FC = () => {
           <MaterialIcons name="edit" size={18} color="#fff" />
         </View>
       </View>
-      <Text style={styles.name}>Nome</Text>
-      <Text style={styles.role}>Atuação</Text>
+      <Text style={styles.name}>{userData.nome}</Text>
+      <Text style={styles.role}>{atuacao}</Text>
     </TouchableOpacity>
   );
 };

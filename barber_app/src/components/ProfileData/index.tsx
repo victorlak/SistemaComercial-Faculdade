@@ -4,41 +4,68 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../services/firebaseConfig';
 import styles from './styles';
+import { buscarLocalStorage } from '../../screens/Login/Storage';
 
 interface UserData {
   nome: string;
   email: string;
   telefone: string;
   dataIngresso: string;
-  nomeBarbearia: string;
-  enderecoBarbearia: string;
+  //nomeBarbearia: string;
+  //enderecoBarbearia: string;
 }
 
 const ProfileData: React.FC = () => {
-  const userId = 'id'; // Substitua
+  const [perfil, setPerfil] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
 
-  /*
-  const fetchUserData = async () => {
-    try {
-      const userRef = doc(db, 'usuarios', userId);
-      const snapshot = await getDoc(userRef);
-      if (snapshot.exists()) {
-        setUserData(snapshot.data() as UserData);
-      } else {
-        Alert.alert('Erro', 'Usuário não encontrado.');
-      }
-    } catch (error) {
-      Alert.alert('Erro', 'Erro ao buscar dados do usuário.');
-    } finally {
-      setLoading(false);
+
+  useEffect(() => {
+    async function getInitialData() {
+      const userProfile = await buscarLocalStorage('perfil');
+      const userIdStored = await buscarLocalStorage('id_logado');
+      setPerfil(userProfile);
+      setUserId(userIdStored);
     }
-  };
+    getInitialData();
+  }, []);
+
+
+  useEffect(() => {
+    async function fetchUserData() {
+      if (!userId || !perfil) return;
+
+      // Define a coleção correta com base no perfil
+      const collectionName = perfil === 'ADM' ? 'Adm' : perfil === 'BARBEIRO' ? 'Barbeiro' : '';
+
+      if (!collectionName) {
+        Alert.alert('Erro', 'Perfil inválido.');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const userRef = doc(db, collectionName, userId);
+        const snapshot = await getDoc(userRef);
+        if (snapshot.exists()) {
+          setUserData(snapshot.data() as UserData);
+        } else {
+          Alert.alert('Erro', 'Usuário não encontrado.');
+        }
+      } catch (error) {
+        Alert.alert('Erro', 'Erro ao buscar dados do usuário.');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchUserData();
+  }, [userId, perfil]);
 
   const handleEdit = () => {
-    // ação de edição
-
+    Alert.alert('Editar perfil', 'Funcionalidade em desenvolvimento.');
   };
 
   const handleEmailPress = () => {
@@ -47,18 +74,22 @@ const ProfileData: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
-
   if (loading) {
-    return <ActivityIndicator size="large" color="#1a1a77" />;
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#1a1a77" />
+      </View>
+    );
   }
 
   if (!userData) {
-    return <Text style={{ color: 'red' }}>Erro ao carregar dados do usuário.</Text>;
+    return (
+      <View style={{ padding: 16 }}>
+        <Text style={{ color: 'red', fontSize: 16 }}>Erro ao carregar dados do usuário.</Text>
+      </View>
+    );
   }
-
+  
   return (
     <View>
       <View style={styles.header}>
@@ -91,7 +122,7 @@ const ProfileData: React.FC = () => {
           <Text style={styles.label}>Ingresso</Text>
           <Text style={styles.value}>{userData.dataIngresso}</Text>
         </View>
-
+        {/*
         <View style={styles.item}>
           <Text style={styles.label}>Nome da Barbearia</Text>
           <Text style={styles.value}>{userData.nomeBarbearia}</Text>
@@ -100,56 +131,11 @@ const ProfileData: React.FC = () => {
         <View style={styles.item}>
           <Text style={styles.label}>Endereço da Barbearia</Text>
           <Text style={styles.value}>{userData.enderecoBarbearia}</Text>
-        </View>
+        </View>*/}
       </View>
     </View>
   );
-  */
-   return (
-    <View>
-      <View style={styles.header}>
-        <Text style={styles.title}>Informações Pessoais</Text>
-        <TouchableOpacity style={styles.editButton}>
-          <MaterialIcons name="edit" size={16} color="#1a1a77" />
-          <Text style={styles.editText}>Editar</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.card}>
-        <View style={styles.item}>
-          <Text style={styles.label}>Nome</Text>
-          <Text style={styles.value}>Nome completo</Text>
-        </View>
-
-        <View style={styles.item}>
-          <Text style={styles.label}>Email</Text>
-          <Text style={[styles.value, styles.link]} >
-            email@email.com
-          </Text>
-        </View>
-
-        <View style={styles.item}>
-          <Text style={styles.label}>Telefone</Text>
-          <Text style={styles.value}>(xx)xxxxx-xxxx</Text>
-        </View>
-
-        <View style={styles.item}>
-          <Text style={styles.label}>Ingresso</Text>
-          <Text style={styles.value}>dd/mm/aaaa</Text>
-        </View>
-
-        <View style={styles.item}>
-          <Text style={styles.label}>Nome da Barbearia</Text>
-          <Text style={styles.value}>barbearia</Text>
-        </View>
-
-        <View style={styles.item}>
-          <Text style={styles.label}>Endereço da Barbearia</Text>
-          <Text style={styles.value}>endereco</Text>
-        </View>
-      </View>
-    </View>
-  );
+  
 };
 
 export default ProfileData;
