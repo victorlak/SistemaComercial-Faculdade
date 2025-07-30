@@ -1,14 +1,14 @@
 import React from 'react';
 import { TouchableOpacity, Text, Alert } from 'react-native';
-import { signOut } from 'firebase/auth';
-//import { auth } from '../../services/firebaseConfig';
+import { useNavigation } from '@react-navigation/native';
+import { auth } from '../../services/firebaseConfig'; 
 import styles from './styles';
+import { signOut } from 'firebase/auth';
 
-interface Props {
-  onLogout?: () => void;
-}
+const Logout: React.FC = () => {
+  const navigation = useNavigation();
+  const logout = () => signOut(auth);
 
-const Logout: React.FC<Props> = ({ onLogout }) => {
   const confirmLogout = () => {
     Alert.alert(
       'Sair da conta',
@@ -23,9 +23,11 @@ const Logout: React.FC<Props> = ({ onLogout }) => {
 
   const handleLogout = async () => {
     try {
-      await signOut(auth);
-      onLogout?.();
+      await logout();
+      Alert.alert('Obrigado por usar nossos serviços!!!');
+      navigation.navigate('Splash');
     } catch (error) {
+      console.error('Erro ao deslogar:', error);
       Alert.alert('Erro', 'Não foi possível sair da conta.');
     }
   };
