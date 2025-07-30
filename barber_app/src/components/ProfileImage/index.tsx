@@ -13,6 +13,7 @@ interface UserData {
   email: string;
   telefone: string;
   dataIngresso: string;
+  dataSaida: string;
   //nomeBarbearia: string;
   //enderecoBarbearia: string;
 }

@@ -11,6 +11,8 @@ interface UserData {
   email: string;
   telefone: string;
   dataIngresso: string;
+  dataSaida: string;
+  especialidades: string[];
   //nomeBarbearia: string;
   //enderecoBarbearia: string;
 }
@@ -37,7 +39,6 @@ const ProfileData: React.FC = () => {
     async function fetchUserData() {
       if (!userId || !perfil) return;
 
-      // Define a coleção correta com base no perfil
       const collectionName = perfil === 'ADM' ? 'Adm' : perfil === 'BARBEIRO' ? 'Barbeiro' : '';
 
       if (!collectionName) {
@@ -65,7 +66,7 @@ const ProfileData: React.FC = () => {
   }, [userId, perfil]);
 
   const handleEdit = () => {
-    Alert.alert('Editar perfil', 'Funcionalidade em desenvolvimento.');
+    Alert.alert('Editar perfil', 'Entre em contato com o administrador da barbearia.');
   };
 
   const handleEmailPress = () => {
@@ -122,16 +123,19 @@ const ProfileData: React.FC = () => {
           <Text style={styles.label}>Ingresso</Text>
           <Text style={styles.value}>{userData.dataIngresso}</Text>
         </View>
-        {/*
-        <View style={styles.item}>
-          <Text style={styles.label}>Nome da Barbearia</Text>
-          <Text style={styles.value}>{userData.nomeBarbearia}</Text>
-        </View>
 
         <View style={styles.item}>
-          <Text style={styles.label}>Endereço da Barbearia</Text>
-          <Text style={styles.value}>{userData.enderecoBarbearia}</Text>
-        </View>*/}
+          <Text style={styles.label}>Ingresso</Text>
+          <Text style={styles.value}>{userData.dataSaida}</Text>
+        </View>
+        {perfil === 'BARBEIRO' && userData.especialidades && userData.especialidades.length > 0 && (
+          <View style={styles.item}>
+            <Text style={styles.label}>Especialidades</Text>
+            {userData.especialidades.map((esp, index) => (
+              <Text key={index} style={styles.value}>• {esp}</Text>
+            ))}
+          </View>
+        )}
       </View>
     </View>
   );
