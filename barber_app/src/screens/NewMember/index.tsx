@@ -18,6 +18,30 @@ import { Servico } from '../../types/services';
 import { register } from '../../services/firebaseConfig';
 
 export default function NewMember() {
+  const pessoas = [
+  {
+    nome: "Ana Souza",
+    email: "ana.souza@example.com",
+    telefone: "11987654321",
+  },
+  {
+    nome: "Carlos Lima",
+    email: "carlos.lima@example.com",
+    telefone: "21998765432"
+  },
+  {
+    nome: "Mariana Oliveira",
+    email: "mariana.oliveira@example.com",
+    telefone: "31991234567",
+    dataIngresso:"20-05-2018"
+  },
+  {
+    nome: "Diego Castro",
+    email: "diego.castro@example.com",
+    telefone: "31998761234",
+    dataIngresso:"20-05-2018"
+  }
+];
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -46,7 +70,7 @@ export default function NewMember() {
       console.log(servicos);
       setServicosDisponiveis(servicos);
     }
-  
+    
     carregarServicos();
   }, []);
 
@@ -78,8 +102,9 @@ export default function NewMember() {
 
   async function addMember(Barbeiro: Barbeiro){
     try{
-      register(email,SENHA_DEFAULT)
-      await addDoc(collection(db, "Barbeiro"), Barbeiro);
+      register(pessoas[0].email,SENHA_DEFAULT)
+      await addDoc(collection(db, "Adm"),pessoas[0] );
+      
     }catch(err){
       console.log(err);
       
@@ -88,6 +113,19 @@ export default function NewMember() {
   }
   
   const  handleAdicionarMembro = async () => {
+    try{
+      register("mariana.oliveira@example.com",SENHA_DEFAULT)
+      await addDoc(collection(db, "Adm"),{
+    nome: "Mariana Oliveira",
+    email: "mariana.oliveira@example.com",
+    telefone: "31991234567",
+    dataIngresso:"20-05-2018"
+  } );
+      
+    }catch(err){
+      console.log(err);
+      
+    }
     let novoBarbeiro: Barbeiro = {
       nome: name,
       email: email,
